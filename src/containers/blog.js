@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-//import {connect, dispatch} from 'react-redux';
-//import {bindActionCreators} from 'redux';
-
-//import {fetchPosts, ROUTER} from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';

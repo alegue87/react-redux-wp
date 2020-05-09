@@ -3,21 +3,8 @@ import { connectRoutes } from 'redux-first-router'
 import thunk from 'redux-thunk'
 import page from './pageReducer'
 import posts from './postReducer'
+import { routesMap } from './routes'
 
-function fetchPosts(dispatch){
-  const avatar = `https://api.adorable.io/avatars/${Math.random()}`;
-  setTimeout(() => {
-    // fake async call
-    dispatch({type:'POSTS', payload: avatar });
-  }, 500);
-}
-
-
-const routesMap = {
-  HOME: '/',
-  USER: '/user/:id',
-  BLOG: { path: '/blog', thunk: fetchPosts }
-}
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default function configureStore(preloadedState) {

@@ -1,11 +1,10 @@
-
-var POSTS = 'POSTS'; // From action
+import { FETCH_POSTS, FETCH_POST } from './actions'
 
 export default (state=[], action) => { 
-  console.log('POSTS reducer')
-  console.log(action)
   switch(action.type) {
-    case POSTS:
+    case FETCH_POST:
+      return [action.payload];
+    case FETCH_POSTS:
       return action.payload;
     default:
       return state;
