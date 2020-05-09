@@ -13,5 +13,5 @@ const ConnectedUser = connect(mapStateToProps)(User)
 const NotFound = () => <h3>404</h3>
 
 
-export { Home, ConnectedUser as User, NotFound, Blog }
+export { Blog }
 

@@ -1,66 +1,63 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 //import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-//import Article from './main/article';
-import Link from 'redux-first-router-link'
-import { fetchPost } from '../actions';
-import {BLOG_PAGE, BLOG} from '../pages'
+import Article from './main/article';
+import Empty from './main/empty';
+import PageNav from '../containers/parts/page-nav';
 
 class Main extends Component {
+	componentWillUpdate() {
+		window.scrollTo(0, 0);
+	}
 
-  render() {
-    let title;
-    if(this.props.locationType === BLOG_PAGE){
-      title = 'Single post'
-    }else{
-      title = 'Multiple posts'
-    }
-    title += ' ' + this.props.locationType;
+	isSingle() {
+		return 1 === this.props.posts.length;
+	}
 
-    return (
+	renderPosts(posts) {
+		if (posts.length) {
+			return posts.map(post => {
+				return (<Article key={post.id}
+				                 post={post}
+				                 isSingle={this.isSingle()}/>);
+			});
+		} else {
+			const counter = [...Array(20)];
+			return counter.map((val, i) => {
+				return (<Empty key={i}/>);
+			});
+		}
+	}
 
-      <div style={{display:'flex', flexDirection:'column'}}>
-        <h1>{title}</h1>
-        <Link style={navLink} to={{ type: BLOG }}>Blog</Link>
-        <Link style={navLink} to={{ type: BLOG_PAGE, payload: { postId: 5 } }}>Link to specific /post/5</Link>
-        <br></br>
-        <a style={navLink} onClick={() => { this.props.fetchPost(10) }}>Prendi post con id 10</a>
-        <br></br>
-        Post o posts - {this.props.posts}
-      </div>
-    );
-  }
+	getClasses() {
+		return this.isSingle() ? '' : 'card-columns';
+	}
+
+	render() {
+    console.log('COUNTER', 'Component Main rendered')
+		return (
+			<div>
+				<main id="postsContainer" className={this.getClasses()}>{/*
+        <ReactCSSTransitionGroup
+						transitionName="fade"
+						transitionEnterTimeout={500}
+						transitionLeaveTimeout={1}>
+						{this.renderPosts(this.props.posts)}
+					</ReactCSSTransitionGroup>
+        */}
+        {this.renderPosts(this.props.posts)}
+					
+				</main>
+				<PageNav shouldRender={10 === this.props.posts.length}/>
+			</div>
+		);
+	}
 }
 
 
-function mapStateToProps(state) {
-  return {
-    posts: state.posts,
-    locationType: state.location.type
-  };
+function mapStateToProps({posts}) {
+	return {posts};
 }
 
-function mapDispatchToProps(dispatch) {
-  // const functionsWrapper = Object.assign({ fetchPosts, dispatch }) // === 
-  /*
-  const functionsWrapper = {
-    fetchPost,
-    dispatch
-  }
-  */
-  const funcWrap = { fetchPost }
-  return bindActionCreators(funcWrap, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main)
-
-
-const navLink = {
-  backgroundColor: "blue",
-  padding: "1rem 2rem",
-  margin: "1rem",
-  color: "white"
-};
+export default connect(mapStateToProps)(Main)
