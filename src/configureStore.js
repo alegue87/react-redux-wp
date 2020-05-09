@@ -2,14 +2,11 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { connectRoutes } from 'redux-first-router'
 import thunk from 'redux-thunk'
 import page from './pageReducer'
-
 import posts from './reducers/posts-reducer';
 import menu from './reducers/menu-reducer';
 import tags from './reducers/tag-reducer';
 import cat from './reducers/cat-reducer';
 import comments from './reducers/comments-reducer';
-
-
 import { routesMap } from './routes'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

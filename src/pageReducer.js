@@ -1,4 +1,7 @@
 
-import {pages} from './pages';
+import {pages, BLOG} from './pages';
 
-export default (state = 'HOME', action = {}) => pages[action.type] || state
+export default (state = BLOG, action = {}) => 
+  pages[action.type] || state
+
+  

@@ -35,7 +35,6 @@ class Main extends Component {
 	}
 
 	render() {
-    console.log('COUNTER', 'Component Main rendered')
 		return (
 			<div>
 				<main id="postsContainer" className={this.getClasses()}>{/*

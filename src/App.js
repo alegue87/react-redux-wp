@@ -1,12 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
-// Contains 'Home', 'User' and 'NotFound'
-import * as components from './components'
+import * as containers from './containers'
 
 const App = ({ page }) => {
-  const Component = components[page]
-  return <Component />
+  const Container = containers[page]
+  return <Container />
 }
 
 const mapStateToProps = ({ page }) => ({ page })
