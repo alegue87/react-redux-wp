@@ -11,9 +11,6 @@ export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 export const ROUTER = 'ROUTER';
 
-let RT_API = {
-  root: 'http://localhost:1000/'
-}
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
