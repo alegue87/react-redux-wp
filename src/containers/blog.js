@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect, dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -22,15 +23,22 @@ class Blog extends Component {
   }
 
   componentDidUpdate() {
-    // eslint-disable-next-line no-undef
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
   }
 
   render() {
+    let page;
+    if(this.props.page === 'NotFound'){
+      page = (<div>404: Not found!</div>)
+      document.title = `${RT_API.siteName} - Not found`
+    }
+    else{
+      page = <Main/>
+    }
     return (
       <section className="container-fluid template-blog">
         <Header />
-        <Main />
+        {page}
         <Footer />
       </section>
     );
@@ -41,4 +49,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({ fetchPosts, dispatch }), dispatch)
 }
 
-export default connect(null, mapDispatchToProps)(Blog)
+function mapStateToProps(state){
+  return {
+    page: state.page
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Blog)
