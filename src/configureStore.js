@@ -15,8 +15,8 @@ export default function configureStore(preloadedState) {
   const { reducer, middleware, enhancer } = connectRoutes(routesMap)
 
   const rootReducer = combineReducers({ 
-    page, 
-    posts,
+    page,   // state.page
+    posts,  // state.posts ..
     menu,
     tags,
     cat,
