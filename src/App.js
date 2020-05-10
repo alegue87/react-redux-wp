@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux';
 //import { connect } from 'react-redux'
 import Blog from './containers/blog';
 
@@ -15,12 +16,18 @@ const mapStateToProps = ({ page }) => ({ page })
 
 export default connect(mapStateToProps)(App)
 */
-class App extends React.Component{
+class App extends React.Component{  
   render(){
+    let page = this.props.page;
     return(
-      <Blog/>
+      <Blog page={page}/>
     )
   }
 }
+function mapStateToProps(state){
+  return {
+    page: state.page
+  }
+}
 
-export default App;
+export default connect(mapStateToProps)(App);

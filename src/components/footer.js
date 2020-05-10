@@ -1,9 +1,8 @@
+/* eslint-disable no-undef */
 import React, {Component} from 'react';
 
 import Menu from '../containers/parts/menu';
-const RT_API = {
-  siteName: ''
-}
+
 export default class Footer extends Component {
     getYear() {
         var date = new Date();

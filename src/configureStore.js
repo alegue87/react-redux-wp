@@ -10,10 +10,11 @@ import comments from './reducers/comments-reducer';
 import { routesMap } from './routes'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+const options = {
+}
 export default function configureStore(preloadedState) {
-  const { reducer, middleware, enhancer } = connectRoutes(routesMap)
-
+  const { reducer, middleware, enhancer } = connectRoutes(routesMap, options)
+  
   const rootReducer = combineReducers({ 
     page,   // state.page
     posts,  // state.posts ..

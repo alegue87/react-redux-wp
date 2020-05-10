@@ -69,7 +69,10 @@ export function getTaxIdFromSlug(tax, slug) {
 }
 
 export function fetchPost(prettyPermalink) {
-  return function (dispatch) {
+  return function (dispatch, getState, bag) {
+    if(bag !== undefined)
+      prettyPermalink = bag.action.payload.slug || prettyPermalink;
+
     axios.get(`${PRETTYPERMALINK_ENDPOINT}${prettyPermalink}`)
       .then(response => {
         dispatch({

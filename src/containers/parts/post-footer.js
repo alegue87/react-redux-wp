@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-//import {Link} from 'react-router-dom';
+import {Link} from 'redux-first-router-link';
+import {TAG} from '../../pages'
 
 import {fetchTaxInfo} from '../../actions';
 
@@ -21,12 +22,8 @@ class PostFooter extends Component {
     }
 
     renderTags() {
-        return <div className="tags nav">
-            <span className="nav-link disabled">Tags:</span>
-            {this.props.tags.map(tag => {
-                return {/*<Link className="nav-link" to={`/tag/${tag.name}`} key={tag.id}>{tag.name}</Link>*/}
-            })}
-        </div>;
+        return (<div></div>)
+
     }
 
     shouldShowFooter() {

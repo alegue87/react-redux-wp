@@ -31,7 +31,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'categories'      => $this->get_categories_with_links(),
 				'current_user'    => wp_get_current_user()
 			) );
-			wp_enqueue_style( 'theme_stylesheet', get_template_directory_uri() . '/bundle.css', [ 'bootstrap4-css' ], $this->version );
+			//wp_enqueue_style( 'theme_stylesheet', get_template_directory_uri() . '/bundle.css', [ 'bootstrap4-css' ], $this->version );
 		}
 
 		function get_categories_with_links() {
