@@ -47,7 +47,9 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
       .then(response => {
         dispatch({
           type: CATEGORY_POSTS,
-          payload: response.data
+          payload: {
+            list:response.data
+          }
         });
       });
   }
