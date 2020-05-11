@@ -19,7 +19,6 @@ class Blog extends Component {
   componentDidUpdate() {
     // 
     const sitename = `${RT_API.siteName}`;
-    console.log(this.props.page)
     switch (this.props.page) {
       case BLOG:
       case BLOG_PAGE: // pageNum ..
@@ -39,8 +38,6 @@ class Blog extends Component {
         const cat = this.props.cat;
         this.props.fetchPostsFromTax('categories', cat[0].id);
         break;
-      case FETCH_TAG_INFO:
-        const tag = this.props.tag;
       default:
         ;
     }
