@@ -33,7 +33,7 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 }
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
-  return function (dispatch) {
+  return function (dispatch, getState, bag) {
     const url = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
     axios.get(url)
       .then(response => {
@@ -46,7 +46,12 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
 }
 
 export function getTaxIdFromSlug(tax, slug) {
-  return function (dispatch) {
+  return function (dispatch,getState, bag) {
+    if(bag !== undefined)
+    {
+      tax = 'categories';
+      slug = bag.action.payload.name;
+    }
     axios.get(`${WP_API_ENDPOINT}/${tax}?slug=${slug}`)
       .then(response => {
         switch (tax) {

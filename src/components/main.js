@@ -9,7 +9,9 @@ import PageNav from '../containers/parts/page-nav';
 class Main extends Component {
 	componentWillUpdate() {
 		window.scrollTo(0, 0);
-	}
+  }
+  componentWillReceiveProps(){    
+  }
 
 	isSingle() {
 		return 1 === this.props.posts.length;
@@ -59,4 +61,4 @@ function mapStateToProps({posts}) {
 	return {posts};
 }
 
-export default connect(mapStateToProps)(Main)
+export default connect(mapStateToProps, null)(Main)

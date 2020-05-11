@@ -16,17 +16,17 @@ const mapStateToProps = ({ page }) => ({ page })
 
 export default connect(mapStateToProps)(App)
 */
-class App extends React.Component{  
-  render(){
+class App extends React.Component{
+  render(){    
     let page = this.props.page;
     return(
       <Blog page={page}/>
     )
   }
 }
-function mapStateToProps(state){
+function mapStateToProps({page}){
   return {
-    page: state.page
+    page: page
   }
 }
 
