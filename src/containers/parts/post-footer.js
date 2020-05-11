@@ -1,48 +1,44 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'redux-first-router-link';
-import {TAG} from '../../pages'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Link from 'redux-first-router-link';
+import { TAG } from '../../pages'
 
-import {fetchTaxInfo} from '../../actions';
+import { fetchTaxInfo } from '../../actions';
 
 import Comments from '../comments/comments';
 
 class PostFooter extends Component {
-    componentWillMount() {
-        if ('undefined' !== typeof this.props.tagIds && this.props.tagIds.length && this.props.isSingle) {
-            this.props.fetchTaxInfo('tags', this.props.tagIds);
-        }
-    }
+  componentWillMount(){
+    this.renderedTags = null
+    this.props.fetchTaxInfo('tags', this.props.pId, this.props.tagIds)
+  }
 
-    componentWillReceiveProps(nextProps) {
-        if ((this.props.tagIds !== nextProps.tagIds || this.props.tagIds.length !== this.props.tags.length)
-            && nextProps.tagIds.length && nextProps.isSingle) {
-            this.props.fetchTaxInfo('tags', nextProps.tagIds);
-        }
-    }
+  renderTags(tags) {
+    return tags.map( (tag) => {
+      return (<span key={tag.id} style={{marginRight:'5px'}}><Link  to={{type:TAG, payload:{id:tag.id}}}>{tag.name}</Link></span>)
+    })
+  }
 
-    renderTags() {
-        return (<div></div>)
+  shouldShowFooter() {
+    return (this.props.tags.list.length > 0 || this.props.commentStatus !== 'closed');
+  }
 
+  render() {
+    if(this.props.tags.postId === this.props.pId){
+      this.renderedTags = this.renderTags(this.props.tags.list)
     }
-
-    shouldShowFooter() {
-        return this.props.isSingle && (this.props.tags.length > 0 || this.props.commentStatus !== 'closed');
-    }
-
-    render() {
-        return this.shouldShowFooter() ?
-            <footer className="card-footer">
-                {'undefined' !== typeof this.props.tagIds && this.props.tagIds.length > 0 && this.renderTags()}
-                <hr/>
-                {this.props.commentStatus !== 'closed' && <Comments pId={this.props.pId}/>}
-            </footer> :
-            <footer/>;
-    }
+    return(
+      <footer className="card-footer">
+        {this.renderedTags}
+        <hr />
+        {(this.props.commentStatus !== 'closed' && this.props.isSingle) && <Comments pId={this.props.pId} />}
+      </footer>
+    );
+  }
 }
 
-function mapStateToProps({tags}) {
-    return {tags};
+function mapStateToProps({ tags }) {
+  return { tags };
 }
 
-export default connect(mapStateToProps, {fetchTaxInfo})(PostFooter);
+export default connect(mapStateToProps, { fetchTaxInfo })(PostFooter);

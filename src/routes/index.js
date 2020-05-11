@@ -7,6 +7,6 @@ export const routesMap = {
   [BLOG_PAGE]: { path: '/blog/:pageNum', thunk: action.fetchPosts() },
     // Nota: utilizzando /page/:pageNum non va /page/1
   [SINGLE]: {path: '/:slug', thunk: action.fetchPost()},
-  [TAG]: {path: '/tag/:name'},
-  [CATEGORY]: {path: '/category/:name', thunk: action.getTaxIdFromSlug()}
+  [TAG]: {path: '/tag/:id/', thunk: action.fetchPostsFromTax('tags')},
+  [CATEGORY]: {path: '/category/:name', thunk: action.getTaxIdFromSlug('categories')}
 }

@@ -12,7 +12,10 @@ export default class Meta extends Component {
               to={{
                 type:CATEGORY, 
                 payload:
-                  { name:this.getCategoryName(cat.link)}
+                  {
+                    tax:'categories',
+                    name:this.getCategoryName(cat.link)
+                  }
                 }} className="cat-links">{cat.name}</Link>
             {(1 < this.props.categories.length && i < (this.props.categories.length - 1)) ? ', ' : ''}
           </span>);

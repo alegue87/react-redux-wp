@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../pages';
-import { fetchPosts, fetchPostsFromTax, FETCH_CAT_INFO } from '../actions/index';
+import { fetchPosts, fetchPostsFromTax, FETCH_CAT_INFO, FETCH_TAG_INFO } from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
@@ -17,7 +17,9 @@ class Blog extends Component {
 
   }
   componentDidUpdate() {
+    // 
     const sitename = `${RT_API.siteName}`;
+    console.log(this.props.page)
     switch (this.props.page) {
       case BLOG:
       case BLOG_PAGE: // pageNum ..
@@ -36,6 +38,9 @@ class Blog extends Component {
       case FETCH_CAT_INFO:
         const cat = this.props.cat;
         this.props.fetchPostsFromTax('categories', cat[0].id);
+        break;
+      case FETCH_TAG_INFO:
+        const tag = this.props.tag;
       default:
         ;
     }
