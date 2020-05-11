@@ -9,7 +9,6 @@ import Comments from '../comments/comments';
 
 class PostFooter extends Component {
   componentWillMount(){
-    this.refresh = 0
     this.renderedTags = null
     this.props.fetchTaxInfo('tags', this.props.pId, this.props.tagIds)
   }
@@ -34,7 +33,6 @@ class PostFooter extends Component {
   }
 
   render() {
-    this.refresh++
     if(this.props.tags.postId === this.props.pId){
       this.renderedTags = this.renderTags(this.props.tags.list)
     }

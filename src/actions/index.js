@@ -24,9 +24,14 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
     axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&page=${pageNum}`)
       .then(response => {
+        console.log(response)
         dispatch({
           type: FETCH_POSTS,
-          payload: response.data
+          payload: {
+            list: response.data,
+            totalPages: response.headers['x-wp-totalpages'],
+            total: response.headers['x-wp-total']
+          }
         });
       });
   }
@@ -85,7 +90,9 @@ export function fetchPost(prettyPermalink) {
       .then(response => {
         dispatch({
           type: FETCH_POST,
-          payload: [response.data]
+          payload: {
+            list:[response.data]
+          }
         });
       });
   }

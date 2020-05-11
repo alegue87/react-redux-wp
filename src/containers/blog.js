@@ -10,29 +10,35 @@ import Main from '../components/main';
 import Footer from '../components/footer';
 
 class Blog extends Component {
+  constructor(){
+    super()
+    this.pageNum = 1;
+  }
 
   componentDidMount() {
-    // eslint-disable-next-line no-undef
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
-
   }
   componentDidUpdate() {
     // 
     const sitename = `${RT_API.siteName}`;
+    document.title = sitename + ' '
     switch (this.props.page) {
       case BLOG:
-      case BLOG_PAGE: // pageNum ..
       case HOME:
-        document.title = document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
+        this.pageNum = 1
+        break;
+      case BLOG_PAGE:
+        this.pageNum = this.props.pageNum;
+        document.title += `Page ${this.props.pageNum}`;
         break;
       case SINGLE:
-        document.title = sitename + ' ' + 'Single page';
+        document.title += 'Single';
         break;
       case TAG:
-        document.title = sitename + ' ' + 'Tag page';
+        document.title += 'Tag';
         break;
       case CATEGORY:
-        document.title = sitename + ' ' + 'Category page';
+        document.title += 'Category';
         break;
       case FETCH_CAT_INFO:
         const cat = this.props.cat;
@@ -45,9 +51,9 @@ class Blog extends Component {
   render() {
     return (
       <section className="container-fluid template-blog">
-        <h1>{this.props.page}</h1>
+        <h1>Numero pagina: {this.pageNum}</h1>
         <Header />
-        <Main page={this.props.page} />
+        <Main pageNum={this.pageNum} />
         <Footer />
       </section>
     );
@@ -57,8 +63,11 @@ class Blog extends Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({ fetchPostsFromTax, dispatch }), dispatch)
 }
-function mapStateToProps({ cat }) {
-  return { cat }
+function mapStateToProps(state) {
+  return { 
+    cat: state.cat,
+    pageNum: state.location.payload.pageNum
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog)
