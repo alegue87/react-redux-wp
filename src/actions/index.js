@@ -55,9 +55,10 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
         const state = getState()
         if(state.posts.list  !== undefined){
           state.posts.list.map((post)=>{
-            post.categories.map((cat) => {
-              cat.name === slug && (taxId = cat.id);
-            })
+            if(post.categories)
+              post.categories.map((cat) => {
+                cat.name === slug && (taxId = cat.id);
+              })
           })
         }        
       }
