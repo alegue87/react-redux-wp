@@ -173,7 +173,9 @@ export function searchSite(term, post_type = 'posts') {
       .then(response => {
         dispatch({
           type: SEARCH_POSTS,
-          payload: response.data
+          payload: {
+            list: response.data
+          }
         });
       })
   }
