@@ -21,7 +21,6 @@ class Blog extends Component {
   componentDidUpdate() {
     // 
     const sitename = `${RT_API.siteName}`;
-    document.title = sitename + ' '
     switch (this.props.page) {
       case BLOG:
       case HOME:
@@ -29,24 +28,16 @@ class Blog extends Component {
         break;
       case BLOG_PAGE:
         this.pageNum = this.props.pageNum;
-        document.title += `Page ${this.props.pageNum}`;
+        document.title += sitename + ` Page ${this.props.pageNum}`;
         break;
       case SINGLE:
-        document.title += 'Single';
+        document.title += sitename + 'Single';
         break;
       case TAG:
-        document.title += 'Tag';
+        document.title += sitename + 'Tag';
         break;
       case CATEGORY:
-        document.title += 'Category';
-        break;
-      case FETCH_CAT_INFO:
-        const cat = this.props.cat;
-        this.props.fetchPostsFromTax('categories', cat[0].id);
-        break;
-      case FETCH_TAG_INFO:
-        const tag = this.props.tag;
-        this.props.fetchPostsFromTax('tags', tag[0].id);
+        document.title += sitename + 'Category';
         break;
       default:
         ;

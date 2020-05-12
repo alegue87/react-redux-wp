@@ -14,7 +14,8 @@ class Main extends Component {
   }
 
   isSingle() {
-    return 1 === this.props.posts.length;
+    if(this.props.posts.list)
+      return 1 === this.props.posts.list.length;
   }
 
   renderPosts(posts) {

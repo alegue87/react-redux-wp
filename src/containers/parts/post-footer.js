@@ -9,7 +9,14 @@ class PostFooter extends Component {
     return tags.map( (tag) => {
       return (
         <span key={tag.id} style={{marginRight:'5px'}}>
-          <Link  to={{type:TAG, payload:{slug:tag.slug, tax:'tags'}}}>{tag.name}</Link>
+          <Link  to={{
+            type:TAG, 
+                                    // Viene visualizzato lo slug nell'url
+            payload:{               // ma utilizzato il taxId per richiedere
+              slug:tag.slug,        // i posts
+              taxId:tag.id                    
+            }
+          }}>{tag.name}</Link>
         </span>
         )
     })

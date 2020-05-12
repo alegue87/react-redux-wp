@@ -24,7 +24,6 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
     }
     axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&page=${pageNum}`)
       .then(response => {
-        console.log(response)
         dispatch({
           type: FETCH_POSTS,
           payload: {
@@ -40,7 +39,28 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
   return function (dispatch, getState, bag) {
     if (bag !== undefined) {
-      taxId = bag.action.payload.id
+      // l'evento proviene da un click di un link o dalla navigazione.
+      // taxId non è un vero e proprio parametro ( vedi rotte ),
+      // ma è utilizzato al posto dello slug per effettuare una sola
+      // richiesta dei posts invece che due, e viene utilizzato lo 
+      // slug nel link per renderlo più leggibile.
+      taxId = bag.action.payload.taxId;
+      let slug = bag.action.payload.slug;
+      if(taxId === undefined){ // in caso di reload della pagina
+                               // lo stato precedente viene perso
+                               // e non è possibile recuperare i
+                               // posts dato che manca il taxId..
+                               // recuperare il taxId o salvare lo 
+                               // stato di redux da qualche parte?
+        const state = getState()
+        if(state.posts.list  !== undefined){
+          state.posts.list.map((post)=>{
+            post.categories.map((cat) => {
+              cat.name === slug && (taxId = cat.id);
+            })
+          })
+        }        
+      }
     }
     const url = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
     axios.get(url)
@@ -55,7 +75,7 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
   }
 }
 
-export function fetchPostsFromSlug(slug, tax = 'categories', pageNum = 1) {
+export function fetchCatsFromSlug(slug, tax = 'categories', pageNum = 1) {
   return function (dispatch, getState, bag) {
     if (bag !== undefined) {
       slug = bag.action.payload.slug

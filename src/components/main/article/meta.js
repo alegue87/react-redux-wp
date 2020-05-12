@@ -7,14 +7,15 @@ export default class Meta extends Component {
     if ('undefined' !== typeof this.props.categories) {
       return this.props.categories.map((cat, i) => {
         if (1 == this.props.categories.length || cat.slug !== 'uncategorized') {
-          return (<span key={cat.term_id}>
+          return (<span key={cat.id}>
             <Link
               to={{
-                type:CATEGORY, 
+                type:CATEGORY,
                 payload:
                   {
+                    taxId: cat.id,
                     tax:'categories',
-                    slug:this.getCategorySlug(cat.link)
+                    slug:cat.name
                   }
                 }} className="cat-links">{cat.name}</Link>
             {(1 < this.props.categories.length && i < (this.props.categories.length - 1)) ? ', ' : ''}
@@ -22,17 +23,6 @@ export default class Meta extends Component {
         }
       });
     }
-  }
-
-  getCategorySlug(link){
-    const path = this.getCategoryPath(link);
-    return path.replace('/category/', '').replace('/', '');
-  }
-
-  getCategoryPath(link) {
-    var el = document.createElement('a');
-    el.href = link;
-    return el.pathname;
   }
 
   renderDates() {

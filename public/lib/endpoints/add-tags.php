@@ -5,6 +5,11 @@ if( !defined('ABSPATH') ){
 
 if( !class_exists('Add_tags_to_post') ){
   class Add_tags_to_post{
+    /*
+      I tags sono già presenti nel 'post' ma vengono
+      inseriti solo gli id: qui vengono aggiunti anche
+      altri valori.
+    */
     function __construct(){}
 
     function init(){
@@ -17,7 +22,7 @@ if( !class_exists('Add_tags_to_post') ){
               foreach($tags as $tag){
                 array_push($data, array(
                   'id' => $tag->term_id,
-                  'link' => get_tag_link($tag->term_id),
+                  //'link' => get_tag_link($tag->term_id),
                   'name' => $tag->name,
                   'slug' => $tag->slug
                 ));

@@ -13,6 +13,7 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 			include_once 'endpoints/menus.php';
       include_once 'endpoints/pretty-permalinks.php';
       include_once 'endpoints/add-tags.php';
+      include_once 'endpoints/add-categories.php';
 		}
 
 		function init() {
@@ -29,6 +30,7 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
       $Add_Featured_Image_Endpoint->init();
       
       (new Add_tags_to_post())->init();
+      (new Add_categories_to_post())->init();
 
 		}
 	}

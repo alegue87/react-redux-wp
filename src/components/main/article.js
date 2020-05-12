@@ -42,7 +42,7 @@ export default class Article extends Component {
 					<Title link={post.link} isSingle={this.props.isSingle}>
 						{post.title.rendered}
 					</Title>
-					<Meta categories={this.getCategories(post.categories)}
+					<Meta categories={post.categories}
 					      date={post.date}
 					      formattedDate={post.formatted_date}
 					      type={post.type}
