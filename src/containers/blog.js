@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../pages';
-import { fetchPosts, fetchPostsFromTax, FETCH_CAT_INFO, FETCH_TAG_INFO } from '../actions/index';
+import { fetchPostsFromTax } from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
@@ -31,13 +31,13 @@ class Blog extends Component {
         document.title += sitename + ` Page ${this.props.pageNum}`;
         break;
       case SINGLE:
-        document.title += sitename + 'Single';
+        document.title += sitename + ' Single';
         break;
       case TAG:
-        document.title += sitename + 'Tag';
+        document.title += sitename + ' Tag';
         break;
       case CATEGORY:
-        document.title += sitename + 'Category';
+        document.title += sitename + ' Category';
         break;
       default:
         ;

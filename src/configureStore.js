@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { connectRoutes } from 'redux-first-router'
 import thunk from 'redux-thunk'
-import page from './pageReducer'
+import page from './reducers/page-reducer';
 import posts from './reducers/posts-reducer';
 import menu from './reducers/menu-reducer';
 import tag from './reducers/tag-reducer';

@@ -10,8 +10,6 @@ class Main extends Component {
   componentWillUpdate() {
     window.scrollTo(0, 0);
   }
-  componentWillReceiveProps() {
-  }
 
   isSingle() {
     if(this.props.posts.list)
