@@ -44,6 +44,10 @@ class Blog extends Component {
         const cat = this.props.cat;
         this.props.fetchPostsFromTax('categories', cat[0].id);
         break;
+      case FETCH_TAG_INFO:
+        const tag = this.props.tag;
+        this.props.fetchPostsFromTax('tags', tag[0].id);
+        break;
       default:
         ;
     }
@@ -66,6 +70,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return { 
     cat: state.cat,
+    tag: state.tag,
     pageNum: state.location.payload.pageNum
   }
 }

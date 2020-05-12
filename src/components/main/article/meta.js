@@ -14,7 +14,7 @@ export default class Meta extends Component {
                 payload:
                   {
                     tax:'categories',
-                    name:this.getCategoryName(cat.link)
+                    slug:this.getCategorySlug(cat.link)
                   }
                 }} className="cat-links">{cat.name}</Link>
             {(1 < this.props.categories.length && i < (this.props.categories.length - 1)) ? ', ' : ''}
@@ -24,7 +24,7 @@ export default class Meta extends Component {
     }
   }
 
-  getCategoryName(link){
+  getCategorySlug(link){
     const path = this.getCategoryPath(link);
     return path.replace('/category/', '').replace('/', '');
   }

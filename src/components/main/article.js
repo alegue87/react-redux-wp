@@ -13,7 +13,7 @@ export default class Article extends Component {
 
 	getFeaturedImageSrc() {
 		if (this.props.post.featured_image_url) {
-			return this.props.isSingle ? this.props.post.featured_image_url.large : this.props.post.featured_image_url.full;
+			return this.props.isSingle ? this.props.post.featured_image_url.large : this.props.post.featured_image_url.medium;
 		} else {
 			return '';
 		}
@@ -51,7 +51,7 @@ export default class Article extends Component {
 						{this.getContent(post, this.props.isSingle)}
 					</Content>
 				</div>
-				<PostFooter type={post.type} pId={post.id} isSingle={this.props.isSingle} tagIds={post.tags}
+				<PostFooter type={post.type} pId={post.id} isSingle={this.props.isSingle} tags={post.tags}
 				            commentStatus={post.comment_status}/>
 			</article>
 		);

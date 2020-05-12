@@ -19,7 +19,7 @@ const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
 export function fetchPosts(pageNum = 1, post_type = 'posts') {
   return function (dispatch, getState, bag) {
-    if(bag !== undefined){ // called from thunk
+    if (bag !== undefined) { // called from thunk
       pageNum = bag.action.payload.pageNum || pageNum;
     }
     axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&page=${pageNum}`)
@@ -39,7 +39,7 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
   return function (dispatch, getState, bag) {
-    if(bag !== undefined){
+    if (bag !== undefined) {
       taxId = bag.action.payload.id
     }
     const url = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
@@ -48,7 +48,25 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
         dispatch({
           type: CATEGORY_POSTS,
           payload: {
-            list:response.data
+            list: response.data
+          }
+        });
+      });
+  }
+}
+
+export function fetchPostsFromSlug(slug, tax = 'categories', pageNum = 1) {
+  return function (dispatch, getState, bag) {
+    if (bag !== undefined) {
+      slug = bag.action.payload.slug
+    }
+    const url = `${WP_API_ENDPOINT}/${tax}?_embed&slug=${slug}&page=${pageNum}`;
+    axios.get(url)
+      .then(response => {
+        dispatch({
+          type: CATEGORY_POSTS,
+          payload: {
+            list: response.data
           }
         });
       });
@@ -56,11 +74,10 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
 }
 
 export function getTaxIdFromSlug(tax, slug) {
-  return function (dispatch,getState, bag) {
-    if(bag !== undefined)
-    {
+  return function (dispatch, getState, bag) {
+    if (bag !== undefined) {
       tax = bag.action.payload.tax;
-      slug = bag.action.payload.name;
+      slug = bag.action.payload.slug;
     }
     axios.get(`${WP_API_ENDPOINT}/${tax}?slug=${slug}`)
       .then(response => {
@@ -77,6 +94,8 @@ export function getTaxIdFromSlug(tax, slug) {
               payload: response.data
             });
             break;
+          default:
+            ;
         }
 
       });
@@ -85,7 +104,7 @@ export function getTaxIdFromSlug(tax, slug) {
 
 export function fetchPost(prettyPermalink) {
   return function (dispatch, getState, bag) {
-    if(bag !== undefined)
+    if (bag !== undefined)
       prettyPermalink = bag.action.payload.slug || prettyPermalink;
 
     axios.get(`${PRETTYPERMALINK_ENDPOINT}${prettyPermalink}`)
@@ -93,7 +112,7 @@ export function fetchPost(prettyPermalink) {
         dispatch({
           type: FETCH_POST,
           payload: {
-            list:[response.data]
+            list: [response.data]
           }
         });
       });
@@ -107,7 +126,7 @@ export function fetchTaxInfo(tax, postId, tagIds) {
         dispatch({
           type: FETCH_TAG_INFO,
           payload: {
-            list:response.data,
+            list: response.data,
             postId: postId
           }
         });
