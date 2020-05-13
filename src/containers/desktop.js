@@ -9,6 +9,7 @@ import {
   Segment,
   Visibility,
 } from 'semantic-ui-react'
+import Heading from './parts/heading';
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -67,7 +68,7 @@ class DesktopContainer extends Component {
                 </Menu.Item>
               </Container>
             </Menu>
-            <HomepageHeading />
+            <Heading />
           </Segment>
         </Visibility>
 

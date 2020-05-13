@@ -8,10 +8,10 @@ import { Icon, Header, Container, Button } from 'semantic-ui-react';
  * such things.
  */
 const Heading = ({ mobile }) => (
-  <Container text>
+  <Container text >
     <Header
       as='h1'
-      content='Imagine-a-Company'
+      content='Rockymountain'
       inverted
       style={{
         fontSize: mobile ? '2em' : '4em',
@@ -22,7 +22,7 @@ const Heading = ({ mobile }) => (
     />
     <Header
       as='h2'
-      content='Do whatever you want when you want to.'
+      content='Appunti, frasi, idee..'
       inverted
       style={{
         fontSize: mobile ? '1.5em' : '1.7em',

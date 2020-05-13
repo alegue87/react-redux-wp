@@ -19,7 +19,8 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react'
-import ResponsiveContainer from './responsive'
+import ResponsiveContainer from './responsive';
+import PostsCard from './parts/postsCard'
 
 
 class Blog extends Component {
@@ -63,12 +64,7 @@ class Blog extends Component {
     this.preRender()
     const NotFound = () => (<div>404</div>)
     return (
-      <section className="container-fluid template-blog">
-        <h1>Numero pagina: {this.pageNum}</h1>
-        {/* <Header /> */}
-        {this.props.locationType === NOT_FOUND ? <NotFound/> : <Main pageNum={this.pageNum} />}
-        <Footer />
-      </section>
+      <BlogLayout></BlogLayout>
     );
   }
 }
@@ -76,6 +72,7 @@ class Blog extends Component {
 
 const BlogLayout = () => (
   <ResponsiveContainer>
+    <Segment><PostsCard/></Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign='middle'>
         <Grid.Row>
