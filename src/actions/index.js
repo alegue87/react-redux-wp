@@ -10,7 +10,7 @@ export const FETCH_TAG_INFO = 'FETCH_TAG_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
-// Pages
+// Pages ( state.location.type )
 export const HOME = 'HOME';
 export const BLOG = 'BLOG';
 export const BLOG_PAGE = 'BLOG_PAGE';

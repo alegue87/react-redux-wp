@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { 
   fetchPostsFromTax, 
-  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY, FETCH_CAT_INFO } from '../actions/index';
-
+  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../actions/index';
+import {NOT_FOUND} from 'redux-first-router';
 import Header from '../components/header';
 import Main from '../components/main';
 import Footer from '../components/footer';
@@ -19,9 +19,9 @@ class Blog extends Component {
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
   }
-  
+
   preRender() {
-    const sitename = `${RT_API.siteName}`;
+    document.title = `${RT_API.siteName}`;
     switch (this.props.locationType) {
       case BLOG:
       case HOME:
@@ -29,16 +29,19 @@ class Blog extends Component {
         break;
       case BLOG_PAGE:
         this.pageNum = this.props.pageNum*1;
-        document.title += sitename + ` Page ${this.props.pageNum}`;
+        document.title += ` - Page ${this.props.pageNum}`;
         break;
       case SINGLE:
-        document.title += sitename + ' Single';
+        document.title += ' - Single';
         break;
       case TAG:
-        document.title += sitename + ' Tag';
+        document.title += ' - Tag';
         break;
       case CATEGORY:
-        document.title += sitename + ' Category';
+        document.title += ' - Category';
+        break;
+      case NOT_FOUND:
+        document.title += ' - Not found';
         break;
       default:
         ;
@@ -46,11 +49,12 @@ class Blog extends Component {
   }
   render() {
     this.preRender()
+    const NotFound = () => (<div>404</div>)
     return (
       <section className="container-fluid template-blog">
         <h1>Numero pagina: {this.pageNum}</h1>
         <Header />
-        <Main pageNum={this.pageNum} />
+        {this.props.locationType === NOT_FOUND ? <NotFound/> : <Main pageNum={this.pageNum} />}
         <Footer />
       </section>
     );
