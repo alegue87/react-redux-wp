@@ -7,7 +7,7 @@ import Empty from './main/empty';
 import PageNav from '../containers/parts/page-nav';
 
 class Main extends Component {
-  componentWillUpdate() {
+  componentDidUpdate() {
     window.scrollTo(0, 0);
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'redux-first-router-link';
-import {CATEGORY} from '../../../pages';
+import {CATEGORY} from '../../../actions';
 
 export default class Meta extends Component {
   renderCategories() {
@@ -14,7 +14,6 @@ export default class Meta extends Component {
                 payload:
                   {
                     taxId: cat.id,
-                    tax:'categories',
                     slug:cat.name
                   }
                 }} className="cat-links">{cat.name}</Link>

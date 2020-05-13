@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../pages';
-import { fetchPostsFromTax } from '../actions/index';
+import { 
+  fetchPostsFromTax, 
+  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY, FETCH_CAT_INFO } from '../actions/index';
 
 import Header from '../components/header';
 import Main from '../components/main';
@@ -18,16 +19,16 @@ class Blog extends Component {
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
   }
-  componentDidUpdate() {
-    // 
+  
+  preRender() {
     const sitename = `${RT_API.siteName}`;
-    switch (this.props.page) {
+    switch (this.props.locationType) {
       case BLOG:
       case HOME:
         this.pageNum = 1
         break;
       case BLOG_PAGE:
-        this.pageNum = this.props.pageNum;
+        this.pageNum = this.props.pageNum*1;
         document.title += sitename + ` Page ${this.props.pageNum}`;
         break;
       case SINGLE:
@@ -44,6 +45,7 @@ class Blog extends Component {
     }
   }
   render() {
+    this.preRender()
     return (
       <section className="container-fluid template-blog">
         <h1>Numero pagina: {this.pageNum}</h1>
@@ -59,10 +61,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({ fetchPostsFromTax, dispatch }), dispatch)
 }
 function mapStateToProps(state) {
-  return { 
-    cat: state.cat,
-    tag: state.tag,
-    pageNum: state.location.payload.pageNum
+  return {
+    pageNum: state.location.payload.pageNum,
+    locationType: state.location.type
   }
 }
 

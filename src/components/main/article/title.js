@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'redux-first-router-link';
-import {SINGLE} from '../../../pages'
+import {SINGLE} from '../../../actions';
 
 export default class Title extends Component {
   extractPath(link) {

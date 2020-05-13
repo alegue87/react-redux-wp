@@ -10,8 +10,13 @@ export const FETCH_TAG_INFO = 'FETCH_TAG_INFO';
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
-export const ROUTER = 'ROUTER';
-
+// Pages
+export const HOME = 'HOME';
+export const BLOG = 'BLOG';
+export const BLOG_PAGE = 'BLOG_PAGE';
+export const SINGLE = 'SINGLE';
+export const TAG = 'TAG';
+export const CATEGORY = 'CATEGORY';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
@@ -38,41 +43,35 @@ export function fetchPosts(pageNum = 1, post_type = 'posts') {
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
   return function (dispatch, getState, bag) {
+    let slug = ''
     if (bag !== undefined) {
-      // l'evento proviene da un click di un link o dalla navigazione.
-      // taxId non è un vero e proprio parametro ( vedi rotte ),
-      // ma è utilizzato al posto dello slug per effettuare una sola
-      // richiesta dei posts invece che due, e viene utilizzato lo 
-      // slug nel link per renderlo più leggibile.
-      taxId = bag.action.payload.taxId;
-      let slug = bag.action.payload.slug;
-      if(taxId === undefined){ // in caso di reload della pagina
-                               // lo stato precedente viene perso
-                               // e non è possibile recuperare i
-                               // posts dato che manca il taxId..
-                               // recuperare il taxId o salvare lo 
-                               // stato di redux da qualche parte?
-        const state = getState()
-        if(state.posts.list  !== undefined){
-          state.posts.list.map((post)=>{
-            if(post.categories)
-              post.categories.map((cat) => {
-                cat.name === slug && (taxId = cat.id);
-              })
-          })
-        }        
-      }
+      taxId = bag.action.payload.taxId // da click su link
+      slug = bag.action.payload.slug
     }
-    const url = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
-    axios.get(url)
-      .then(response => {
-        dispatch({
-          type: CATEGORY_POSTS,
-          payload: {
-            list: response.data
-          }
+
+    const fetchPosts = (post_type='posts', tax, taxId, pageNum=1) => {
+      const postsUrl = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
+      axios.get(postsUrl)
+        .then(response => {
+          dispatch({
+            type: CATEGORY_POSTS,
+            payload: {
+              list: response.data
+            }
+          });
         });
-      });
+    }
+    if (taxId === undefined || !taxId) {
+      const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
+      axios.get(taxIdUrl)
+        .then(response => {
+          fetchPosts(post_type, tax, response.data[0].id, pageNum)  // nota: uno slug può avere anche più
+                                                                    // taxId  
+        })
+    }
+    else {
+      fetchPosts(post_type, tax, taxId, pageNum);
+    }
   }
 }
 

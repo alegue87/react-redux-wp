@@ -1,5 +1,5 @@
 import * as action from '../actions'
-import {BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY} from '../pages';
+import {BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY} from '../actions';
 
 export const routesMap = {
   [HOME]: { path: '/', thunk: action.fetchPosts() },

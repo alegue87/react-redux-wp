@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Link from 'redux-first-router-link';
 import { connect } from 'react-redux';
-import { BLOG_PAGE } from '../../pages';
+import { BLOG_PAGE } from '../../actions';
 
 class PageNav extends Component {
   getPrevPage() {

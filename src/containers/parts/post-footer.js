@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'redux-first-router-link';
-import { TAG } from '../../pages'
+import { TAG } from '../../actions'
 import Comments from '../comments/comments';
 
 class PostFooter extends Component {
@@ -14,7 +14,8 @@ class PostFooter extends Component {
                                     // Viene visualizzato lo slug nell'url
             payload:{               // ma utilizzato il taxId per richiedere
               slug:tag.slug,        // i posts
-              taxId:tag.id                    
+              taxId:tag.id,
+              name:tag.name              
             }
           }}>{tag.name}</Link>
         </span>
