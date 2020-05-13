@@ -1,6 +1,5 @@
 import * as action from '../actions'
 import {BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY} from '../actions';
-import {NOT_FOUND} from 'redux-first-router';
 
 export const routesMap = {
   [HOME]: { path: '/', thunk: action.fetchPosts() },
@@ -9,5 +8,4 @@ export const routesMap = {
   [SINGLE]: {path: '/:slug', thunk: action.fetchPost()},
   [TAG]: {path: '/tag/:slug/', thunk: action.fetchPostsFromTax('tags')},
   [CATEGORY]: {path: '/category/:slug', thunk: action.fetchPostsFromTax('categories')},
-  [NOT_FOUND]: { path: '/blog'}
 }
