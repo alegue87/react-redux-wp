@@ -29,7 +29,7 @@ class Blog extends Component {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
   }
 
-  componentDidUpdate() {
+  preRender() {
     document.title = `${RT_API.siteName}`;
     switch (this.props.locationType) {
       case HOME:
@@ -52,10 +52,12 @@ class Blog extends Component {
     }
   }
   render() {
-    
+    this.preRender()
     const NotFound = () => (<div>404</div>)
     return (
-      <BlogLayout></BlogLayout>
+      <BlogLayout>
+        <PostsCard/>
+      </BlogLayout>
     );
   }
 }
@@ -64,7 +66,7 @@ class Blog extends Component {
 const BlogLayout = ({children}) => (
   <ResponsiveContainer>
     {children}
-    <Segment><PostsCard/></Segment>
+    <Segment></Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign='middle'>
         <Grid.Row>

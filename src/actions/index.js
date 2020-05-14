@@ -26,10 +26,15 @@ export function fetchPosts({
     post_type = 'posts',
     per_page = 1,
     page = 1,
+    tax = {type:'', id: 0},
     context = '_embed'
   }) {
+  let tax_query = ''
+  if(tax.type !== ''){
+    tax_query = `&${tax.type}=${tax.id}`
+  }
   return function (dispatch, getState, bag) {
-    let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}`
+    let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}${tax_query}`
     axios.get(postsUrl)
       .then(response => {
         dispatch({
@@ -101,7 +106,7 @@ export function fetchCatsFromSlug(slug, tax = 'categories', pageNum = 1) {
 export function getTaxIdFromSlug(tax, slug) {
   return function (dispatch, getState, bag) {
     if (bag !== undefined) {
-      tax = bag.action.payload.tax;
+      //tax = bag.action.payload.tax;
       slug = bag.action.payload.slug;
     }
     axios.get(`${WP_API_ENDPOINT}/${tax}?slug=${slug}`)
