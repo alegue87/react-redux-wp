@@ -34,13 +34,19 @@ export function fetchPosts({
     tax_query = `&${tax.type}=${tax.id}`
   }
   return function (dispatch, getState, bag) {
+    let prevList = []
+    if(page>1){
+      const state = getState()
+      prevList = state.posts.list;
+    }
+
     let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}${tax_query}`
     axios.get(postsUrl)
       .then(response => {
         dispatch({
           type: FETCH_POSTS,
           payload: {
-            list: response.data,
+            list: prevList.concat(response.data),
             totalPages: response.headers['x-wp-totalpages'],
             total: response.headers['x-wp-total'],
             page: page

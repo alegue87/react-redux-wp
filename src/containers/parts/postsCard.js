@@ -3,31 +3,22 @@ import { Card } from 'semantic-ui-react';
 import PostCard from './../../components/main/PostCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { fetchPosts, TAG, CATEGORY, FETCH_POSTS } from '../../actions'
+import { fetchPosts, TAG, CATEGORY, HOME, FETCH_POSTS, FETCH_CAT_INFO, FETCH_TAG_INFO } from '../../actions'
 
 class PostsCard extends React.Component {
   constructor(props) {
     super(props)
-    this.props = {
-      perPage: 3
-    }
-    this.pageNum = 0
-    this.posts = []
+    this.perPage = 3
+    this.locationPathname = ''
   }
 
   fetchPosts() {
-    let totalPages
-    if (this.props.posts.totalPages === undefined) {
-      totalPages = 1
-    }
-    else {
-      totalPages = this.props.posts.totalPages;
-    }
+    let totalPages = this.props.posts.totalPages
     let tax = {
       type: '',
       id: 0
     }
-    if (this.pageNum < totalPages) {
+    if (this.props.posts.page < totalPages) {
       switch (this.props.location.type) {
         case CATEGORY:
           tax.type = 'categories'
@@ -39,11 +30,11 @@ class PostsCard extends React.Component {
           break;
         default: ;
       }
-      this.pageNum++
+
       this.props.fetchPosts({
         post_type: 'posts',
-        per_page: this.props.perPage,
-        page: this.pageNum,
+        per_page: this.perPage,
+        page: this.props.posts.page+1,
         tax
       })
     }
@@ -58,20 +49,22 @@ class PostsCard extends React.Component {
 
   componentDidUpdate(){
     if (this.locationPathname !== this.props.location.pathname) {
-      this.locationPathname = this.props.location.pathname
-      this.posts = []
-      this.pageNum = 0
-      window.scrollTo({top:0, behavior:'smooth'})
+      if(this.props.posts.list.length > 0)
+        this.props.resetPosts()
+      //window.scrollTo({top:0, behavior:'smooth'})
+      window.scrollTo({top:document.getElementById('card').offsetTop})
+      if(this.props.page === HOME || this.props.page === FETCH_CAT_INFO || this.props.page === FETCH_TAG_INFO ){
+        this.locationPathname = this.props.location.pathname
+        this.fetchPosts()  // Carica primi posts
+        
+      }
     }
   }
 
   render() {
-    if (this.props.page === FETCH_POSTS) {
-      this.posts = this.posts.concat(this.props.posts.list)
-    }
     return (
-      <Card.Group centered>
-        {this.posts.length > 0 && this.posts.map(
+      <Card.Group id={'card'} centered>
+        {this.props.posts.list.length > 0 && this.props.posts.list.map(
           (post) => {
             return (<PostCard key={post.id} post={post} />)
           })
@@ -86,6 +79,20 @@ function mapStateToProps({ posts, location, cat, tag, page }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPosts }, dispatch)
+  return bindActionCreators({ fetchPosts, resetPosts }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PostsCard)
+
+function resetPosts(dispatch){
+  return (dispatch) => {
+    dispatch({
+      type: FETCH_POSTS,
+      payload: {
+        list: [],
+        totalPages: 1,
+        total: 0,
+        page: 0
+      }
+    });
+  }
+}

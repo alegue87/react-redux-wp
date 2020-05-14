@@ -2,7 +2,7 @@ import * as action from '../actions'
 import {BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY} from '../actions';
 
 export const routesMap = {
-  [HOME]: { path: '/' },
+  [HOME]: { path: '/'},
   //[BLOG]: { path: '/blog', thunk: action.fetchPosts() },
   //[BLOG_PAGE]: { path: '/page/:pageNum', thunk: action.fetchPosts() },
   [SINGLE]: {path: '/:slug', thunk: action.fetchPost()},
