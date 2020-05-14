@@ -22,26 +22,30 @@ const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
-export function fetchPosts(pageNum = 1, post_type = 'posts') {
+export function fetchPosts({
+    post_type = 'posts',
+    per_page = 1,
+    page = 1,
+    context = '_embed'
+  }) {
   return function (dispatch, getState, bag) {
-    if (bag !== undefined) { // called from thunk
-      pageNum = bag.action.payload.pageNum || pageNum;
-    }
-    axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&page=${pageNum}`)
+    let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}`
+    axios.get(postsUrl)
       .then(response => {
         dispatch({
           type: FETCH_POSTS,
           payload: {
             list: response.data,
             totalPages: response.headers['x-wp-totalpages'],
-            total: response.headers['x-wp-total']
+            total: response.headers['x-wp-total'],
+            page: page
           }
         });
       });
   }
 }
 
-export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, post_type = 'posts') {
+export function fetchPostsFromTax(tax = 'categories', taxId = 0, post_type = 'posts') {
   return function (dispatch, getState, bag) {
     let slug = ''
     if (bag !== undefined) {
@@ -49,8 +53,8 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
       slug = bag.action.payload.slug
     }
 
-    const fetchPosts = (post_type='posts', tax, taxId, pageNum=1) => {
-      const postsUrl = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&page=${pageNum}`;
+    function fetchPosts(post_type = 'posts', tax, taxId, offset = 0) {
+      const postsUrl = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&offset=${offset}&per_page=1`;
       axios.get(postsUrl)
         .then(response => {
           dispatch({
@@ -65,12 +69,13 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, pageNum = 1, po
       const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
       axios.get(taxIdUrl)
         .then(response => {
-          fetchPosts(post_type, tax, response.data[0].id, pageNum)  // nota: uno slug può avere anche più
-                                                                    // taxId  
+          const taxId = response.data[0].id
+          fetchPosts(post_type, tax, taxId)  // nota: uno slug può avere anche più
+          // taxId  
         })
     }
     else {
-      fetchPosts(post_type, tax, taxId, pageNum);
+      fetchPosts(post_type, tax, taxId);
     }
   }
 }

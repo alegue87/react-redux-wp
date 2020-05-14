@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { 
-  fetchPostsFromTax, 
+  fetchPosts, 
   BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../actions/index';
 import {NOT_FOUND} from 'redux-first-router';
 // import Header from '../components/header';
@@ -24,25 +24,16 @@ import PostsCard from './parts/postsCard'
 
 
 class Blog extends Component {
-  constructor(){
-    super()
-    this.pageNum = 1;
-  }
 
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
   }
 
-  preRender() {
+  componentDidUpdate() {
     document.title = `${RT_API.siteName}`;
     switch (this.props.locationType) {
-      case BLOG:
       case HOME:
-        this.pageNum = 1
-        break;
-      case BLOG_PAGE:
-        this.pageNum = this.props.pageNum*1;
-        document.title += ` - Page ${this.props.pageNum}`;
+        document.title += ` - Page ${this.pageNum}`;
         break;
       case SINGLE:
         document.title += ' - Single';
@@ -61,7 +52,7 @@ class Blog extends Component {
     }
   }
   render() {
-    this.preRender()
+    
     const NotFound = () => (<div>404</div>)
     return (
       <BlogLayout></BlogLayout>
@@ -70,8 +61,9 @@ class Blog extends Component {
 }
 
 
-const BlogLayout = () => (
+const BlogLayout = ({children}) => (
   <ResponsiveContainer>
+    {children}
     <Segment><PostsCard/></Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign='middle'>
@@ -202,11 +194,10 @@ const BlogLayout = () => (
 
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({ fetchPostsFromTax, dispatch }), dispatch)
+  return bindActionCreators(Object.assign({ fetchPosts, dispatch }), dispatch)
 }
 function mapStateToProps(state) {
   return {
-    pageNum: state.location.payload.pageNum,
     locationType: state.location.type
   }
 }

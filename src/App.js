@@ -5,17 +5,11 @@ import Blog from './containers/blog';
 import 'semantic-ui-css/semantic.min.css';
 
 class App extends React.Component{
-  render(){    
-    let page = this.props.page;
+  render(){
     return(
-      <Blog page={page}/>
+      <Blog/>
     )
   }
 }
-function mapStateToProps({page}){
-  return {
-    page: page
-  }
-}
 
-export default connect(mapStateToProps)(App);
+export default App;
