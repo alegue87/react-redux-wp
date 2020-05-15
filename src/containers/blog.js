@@ -74,7 +74,6 @@ class Blog extends Component {
   }
   render() {
     this.preRender()
-
     return (
       <BlogLayout title={this.title}>
         {this.content}
@@ -87,7 +86,7 @@ class Blog extends Component {
 const BlogLayout = ({ children, title }) => (
   <ResponsiveContainer>
     <Segment>
-      <Header as='h1'>{title}</Header>
+      {/*<Header as='h1' dangerouslySetInnerHTML={{__html:'title'}}/>*/}
       {children}
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
