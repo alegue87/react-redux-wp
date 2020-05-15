@@ -1,4 +1,4 @@
-import { FETCH_POSTS, FETCH_POST, SEARCH_POSTS, CATEGORY_POSTS } from '../actions';
+import { FETCH_POSTS, FETCH_POST, SEARCH_POSTS, CATEGORY_POSTS} from '../actions';
 
 export default (state = {page:0, list:[], totalPages:1, total:0}, action) => {
 

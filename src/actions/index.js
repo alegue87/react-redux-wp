@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
+export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
