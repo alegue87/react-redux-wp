@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { connectRoutes } from 'redux-first-router'
 import thunk from 'redux-thunk'
-import page from './reducers/page-reducer';
+import action from './reducers/action-reducer';
 import posts from './reducers/posts-reducer';
 import menu from './reducers/menu-reducer';
 import tag from './reducers/tag-reducer';
@@ -22,7 +22,7 @@ export default function configureStore(preloadedState) {
   const { reducer, middleware, enhancer } = connectRoutes(routesMap/*, options*/)
 
   const rootReducer = combineReducers({
-    page,   // state.page
+    action,   // state.action
     posts,  // state.posts ..
     menu,
     tag,

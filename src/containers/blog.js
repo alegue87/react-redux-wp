@@ -2,13 +2,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { 
-  fetchPosts, 
-  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY } from '../actions/index';
-import {NOT_FOUND} from 'redux-first-router';
+import {
+  fetchPosts,
+  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY, FETCH_POST
+} from '../actions/index';
+import { NOT_FOUND } from 'redux-first-router';
 // import Header from '../components/header';
 import Main from '../components/main';
 import Footer from '../components/footer';
+import Article from '../components/article'
 import {
   Button,
   Container,
@@ -31,42 +33,63 @@ class Blog extends Component {
 
   preRender() {
     document.title = `${RT_API.siteName}`;
+    this.title = ''
+    this.content = null
     switch (this.props.locationType) {
       case HOME:
-        document.title += ` - Page ${this.pageNum}`;
+        document.title += ` - ${RT_API.siteDescription}`;
+        this.title = 'Posts'
+        this.content = <PostsCard />
         break;
       case SINGLE:
-        document.title += ' - Single';
+        // POost arrivato
+        if (this.props.action=== FETCH_POST) {
+          const post = this.props.posts.list[0]
+          this.title = post.title.rendered
+          this.content = <Article>{post.content.rendered}</Article>
+        } else {
+          this.title = ''
+          this.content = <Article /> // fetching in corso..  
+        }
         break;
       case TAG:
-        document.title += ' - Tag';
+        this.title = 'Tag ' + this.props.tagName
+        document.title += ' - ' + this.props.tagName
+        this.content = <PostsCard />
         break;
       case CATEGORY:
-        document.title += ' - Category';
+        this.title = 'Categoria ' + this.props.catName
+        document.title += ' - ' + this.props.catName
+        this.content = <PostsCard />
         break;
       case NOT_FOUND:
         document.title += ' - Not found';
+        this.content = () => (<div>404</div>)
         break;
       default:
         ;
     }
+
+
   }
   render() {
     this.preRender()
-    const NotFound = () => (<div>404</div>)
+
     return (
-      <BlogLayout>
-        <PostsCard/>
+      <BlogLayout title={this.title}>
+        {this.content}
       </BlogLayout>
     );
   }
 }
 
 
-const BlogLayout = ({children}) => (
+const BlogLayout = ({ children, title }) => (
   <ResponsiveContainer>
-    {children}
-    <Segment></Segment>
+    <Segment>
+      <Header as='h1'>{title}</Header>
+      {children}
+    </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Grid container stackable verticalAlign='middle'>
         <Grid.Row>
@@ -200,7 +223,11 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state) {
   return {
-    locationType: state.location.type
+    locationType: state.location.type,
+    action: state.action,
+    catName: state.cat.name,
+    tagName: state.tag.name,
+    posts: state.posts
   }
 }
 

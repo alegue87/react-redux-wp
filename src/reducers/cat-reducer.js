@@ -6,6 +6,7 @@ export default (state = { taxId: 0, slug: '' }, action) => {
       return {
         taxId: action.payload[0].id,
         slug: action.payload[0].slug,
+        name: action.payload[0].name,
       }
     case CATEGORY:
       return action.payload;
