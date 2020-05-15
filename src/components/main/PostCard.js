@@ -3,9 +3,9 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 import { CATEGORY, TAG, SINGLE } from '../../actions';
 import Link from 'redux-first-router-link';
 
-const PostCard = ({post}) => {
+const PostCard = ({post, style}) => {
   return(
-    <Card>
+    <Card style={style}>
       <Image src={post.featured_image_url.medium} wrapped ui={false} />
       <Card.Content>
         <Card.Header>

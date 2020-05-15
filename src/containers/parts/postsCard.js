@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Transition, Card, List, Grid } from 'semantic-ui-react';
 import PostCard from './../../components/main/PostCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
@@ -8,7 +8,7 @@ import { fetchPosts, TAG, CATEGORY, HOME, FETCH_POSTS, FETCH_CAT_INFO, FETCH_TAG
 class PostsCard extends React.Component {
   constructor(props) {
     super(props)
-    this.perPage = 3
+    this.perPage = 4
     this.locationPathname = ''
   }
 
@@ -34,7 +34,7 @@ class PostsCard extends React.Component {
       this.props.fetchPosts({
         post_type: 'posts',
         per_page: this.perPage,
-        page: this.props.posts.page+1,
+        page: this.props.posts.page + 1,
         tax
       })
     }
@@ -45,31 +45,53 @@ class PostsCard extends React.Component {
       this.fetchPosts.bind(this)();
     })
     this.locationPathname = this.props.location.pathname
+    this.fetchPosts();
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     if (this.locationPathname !== this.props.location.pathname) {
-      if(this.props.posts.list.length > 0)
+      if (this.props.posts.list.length > 0)
         this.props.resetPosts()
       //window.scrollTo({top:0, behavior:'smooth'})
-      window.scrollTo({top:document.getElementById('card').offsetTop})
-      if(this.props.page === HOME || this.props.page === FETCH_CAT_INFO || this.props.page === FETCH_TAG_INFO ){
+      window.scrollTo({ top: document.getElementById('cards').offsetTop })
+      if (this.props.page === HOME || this.props.page === FETCH_CAT_INFO || this.props.page === FETCH_TAG_INFO) {
         this.locationPathname = this.props.location.pathname
         this.fetchPosts()  // Carica primi posts
-        
+
       }
     }
+  }
+  renderCardsRows(posts) {
+    const forColumn = this.perPage
+    let rows = [];
+    for (let i = 0; i < posts.length; i += forColumn) {
+      let cols = []
+      for (let k = i; k < i + forColumn; k++) {
+        let card;
+        if(k<posts.length){
+          card = <PostCard style={{height:'100%'}} key={posts[k].id} post={posts[k]} />
+        }
+        else{
+          card = ''
+        }
+        cols.push( 
+        <Grid.Column key={k} width={forColumn}>
+          {card}
+        </Grid.Column>
+        )
+      }
+      let row = <Grid.Row key={i}>{cols}</Grid.Row>
+      rows.push(row)
+    }
+    return rows
+
   }
 
   render() {
     return (
-      <Card.Group id={'card'} centered>
-        {this.props.posts.list.length > 0 && this.props.posts.list.map(
-          (post) => {
-            return (<PostCard key={post.id} post={post} />)
-          })
-        }
-      </Card.Group>
+      <Grid container stackable centered>
+        {this.props.posts.list.length > 0 && this.renderCardsRows(this.props.posts.list)}
+      </Grid>
     )
   }
 }
@@ -83,7 +105,7 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PostsCard)
 
-function resetPosts(dispatch){
+function resetPosts(dispatch) {
   return (dispatch) => {
     dispatch({
       type: FETCH_POSTS,
