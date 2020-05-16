@@ -71,8 +71,9 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
         wp_deregister_style('contact-form-7');
       if($this->plugin_installed(ACE)){
         wp_deregister_script('simple-code-block-gutenberg-frontend-ace');
+        wp_deregister_style('simple-code-block-gutenberg'); // non va..
       }
-      wp_deregister_script('wp-emoji');
+      wp_deregister_script('wp-emoji'); // neanche
         
 		}
 

@@ -14,6 +14,7 @@ class Article extends React.Component {
   }
   componentDidMount() {
     this.props.resetPosts()
+    window.scrollTo(0,0)
   }
 
   hasClass(name, list) {
@@ -26,10 +27,12 @@ class Article extends React.Component {
     return res
   }
 
+  componentDidUpdate(){
+    window.scrollTo(0,0)
+  }
 
   render() {
-
-    //setTimeout(()=>{jQuery('.wp-block-simple-code-block-ace').removeAttr('style')},100)
+    
     let content;
     let html = this.props.children
 
@@ -37,9 +40,14 @@ class Article extends React.Component {
       replace: domNode => {
         if (domNode.attribs && domNode.attribs.class) {
           const classes = domNode.attribs.class
-          if (classes.split(' ').find(c => c === 'wp-block-simple-code-block-ace')) {
-            console.log(domNode.children[0].children[0].data)
-            return <AceEditor value={domNode.children[0].children[0].data}/>
+          if (classes.split(' ').find(c => 
+              c === 'wp-block-simple-code-block-ace' ||
+              c === 'wp-block-code')) {
+            return <AceEditor 
+              value={domNode.children[0].children[0].data}
+              fontSize={'15px'}
+              width={'100%'}
+              />
           }
         }
       }
@@ -49,7 +57,7 @@ class Article extends React.Component {
         parse(html, options)}</Container>
     }
     else {
-      content = <Container style={{ minHight: '100px' }}>
+      content = <Container style={{ minHight: '100px', fontSize:'120%' }}>
         <Loader active />
       </Container>
     }

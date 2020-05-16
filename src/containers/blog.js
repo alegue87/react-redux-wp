@@ -43,7 +43,7 @@ class Blog extends Component {
         break;
       case SINGLE:
         // POost arrivato
-        if (this.props.action=== FETCH_POST) {
+        if (this.props.action === FETCH_POST) {
           const post = this.props.posts.list[0]
           this.title = post.title.rendered
           this.content = <Article>{post.content.rendered}</Article>
@@ -75,7 +75,8 @@ class Blog extends Component {
   render() {
     this.preRender()
     return (
-      <BlogLayout title={this.title}>
+      <BlogLayout>
+        <h1 dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
         {this.content}
       </BlogLayout>
     );
@@ -86,7 +87,6 @@ class Blog extends Component {
 const BlogLayout = ({ children, title }) => (
   <ResponsiveContainer>
     <Segment>
-      {/*<Header as='h1' dangerouslySetInnerHTML={{__html:'title'}}/>*/}
       {children}
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
