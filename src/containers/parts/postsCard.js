@@ -3,7 +3,8 @@ import { Grid, Segment, Label, Icon, Loader } from 'semantic-ui-react';
 import PostCard from './../../components/main/PostCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { fetchPosts, TAG, CATEGORY, HOME, FETCH_POSTS, FETCH_CAT_INFO, FETCH_TAG_INFO, FETCHING_POSTS } from '../../actions'
+import { fetchPosts, resetPosts,
+  TAG, CATEGORY, HOME, FETCH_POSTS, FETCH_CAT_INFO, FETCH_TAG_INFO, FETCHING_POSTS } from '../../actions'
 
 class PostsCard extends React.Component {
   constructor(props) {
@@ -55,6 +56,7 @@ componentDidMount() {
 
 componentWillUnmount(){
   window.removeEventListener('scroll', this.onScrollFetchPosts)
+  this.props.resetPosts();
 }
 
 componentDidUpdate() {
@@ -122,16 +124,3 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PostsCard)
 
-function resetPosts(dispatch) {
-  return (dispatch) => {
-    dispatch({
-      type: FETCH_POSTS,
-      payload: {
-        list: [],
-        totalPages: 1,
-        total: 0,
-        page: 0
-      }
-    });
-  }
-}

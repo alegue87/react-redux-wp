@@ -20,9 +20,9 @@ if ( ! class_exists( 'Theme_Support' ) ) :
 			add_theme_support( 'post-thumbnails' );
 			add_filter( 'rest_allow_anonymous_comments', '__return_true' );
 			//add_action( 'after_setup_theme', [ $this, 'title_tag' ] );
-			add_filter( 'nav_menu_css_class', [ $this, 'bootstrap_menu_classes' ], 1, 3 );
-			add_filter( 'nav_menu_link_attributes', [ $this, 'bootstrap_menu_link_classes' ], 10, 3 );
-			add_action( 'get_search_form', [ $this, 'alt_search_form' ] );
+			//add_filter( 'nav_menu_css_class', [ $this, 'bootstrap_menu_classes' ], 1, 3 );
+			//add_filter( 'nav_menu_link_attributes', [ $this, 'bootstrap_menu_link_classes' ], 10, 3 );
+			//add_action( 'get_search_form', [ $this, 'alt_search_form' ] );
 		}
 
 		function bootstrap_menu_classes( $classes, $item, $args ) {
