@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
+export const RESET_POSTS = 'RESET_POSTS';
 export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
@@ -26,13 +27,7 @@ const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 export function resetPosts(dispatch) {
   return (dispatch) => {
     dispatch({
-      type: FETCH_POSTS,
-      payload: {
-        list: [],
-        totalPages: 1,
-        total: 0,
-        page: 0
-      }
+      type: RESET_POSTS
     });
   }
 }

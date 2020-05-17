@@ -29,6 +29,29 @@ class Blog extends Component {
 
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
+    this.locationPathname = this.props.locationPathname
+  }
+
+  menuHeight() {
+    return document.getElementsByClassName('menu')[0].offsetHeight * 1;
+  }
+
+  scrollTop() {
+    const y = document.getElementById('first-segment').offsetTop - this.menuHeight()
+    setTimeout(() => {
+      window.scrollTo(0, y)
+    }, 200)    
+  }
+
+  locationChanged() {
+    if (this.locationPathname !== this.props.locationPathname) return true; else return false;
+  }
+  
+  componentDidUpdate() {
+    if (this.locationChanged()) {
+      this.scrollTop();
+      this.locationPathname = this.props.locationPathname
+    }
   }
 
   preRender() {
@@ -53,13 +76,15 @@ class Blog extends Component {
         }
         break;
       case TAG:
-        this.title = 'Tag ' + this.props.tagName
-        document.title += ' - ' + this.props.tagName
+        const tagName =  this.props.tagName || ''
+        this.title = 'Tag ' + tagName
+        document.title += ' - ' + tagName
         this.content = <PostsCard />
         break;
       case CATEGORY:
-        this.title = 'Categoria ' + this.props.catName
-        document.title += ' - ' + this.props.catName
+        const catName = this.props.catName || ''
+        this.title = 'Categoria ' + catName
+        document.title += ' - ' + catName
         this.content = <PostsCard />
         break;
       case NOT_FOUND:
@@ -76,7 +101,11 @@ class Blog extends Component {
     this.preRender()
     return (
       <BlogLayout>
-        <h1 dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
+        <Container text>
+          <h1
+            style={{ marginBottom: '30px', textAlign: 'center' }}
+            dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
+        </Container>
         {this.content}
       </BlogLayout>
     );
@@ -86,7 +115,7 @@ class Blog extends Component {
 
 const BlogLayout = ({ children, title }) => (
   <ResponsiveContainer>
-    <Segment>
+    <Segment id={'first-segment'}>
       {children}
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
@@ -223,6 +252,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     locationType: state.location.type,
+    locationPathname: state.location.pathname,
     action: state.action,
     catName: state.cat.name,
     tagName: state.tag.name,

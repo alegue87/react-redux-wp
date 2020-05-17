@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Container, Loader } from 'semantic-ui-react'
 import { resetPosts } from '../actions'
-import AceEditor  from 'react-ace';
-import parse, { domToReact } from 'html-react-parser'
-
+import SyntaxHighlighter from 'react-syntax-highlighter'
+import forest from 'react-syntax-highlighter/dist/esm/styles/hljs/atelier-forest-light'
+import parse from 'html-react-parser'
+import './article.css'
 
 class Article extends React.Component {
 
@@ -14,50 +15,60 @@ class Article extends React.Component {
   }
   componentDidMount() {
     this.props.resetPosts()
-    window.scrollTo(0,0)
   }
 
-  hasClass(name, list) {
-    let res = false;
-    list.forEach(v => {
-      if (v === name) {
-        res = true;
+  hasClass(name, classes) {
+    let results = false
+    classes.split(' ').forEach(c => {
+      if (c === name) {
+        results = true;
       }
     })
-    return res
+    return results
   }
 
-  componentDidUpdate(){
-    window.scrollTo(0,0)
+  componentDidUpdate() {
   }
 
   render() {
-    
+
     let content;
     let html = this.props.children
 
     const options = {
       replace: domNode => {
-        if (domNode.attribs && domNode.attribs.class) {
+        if (domNode.attribs && domNode.attribs.class !== undefined) {
           const classes = domNode.attribs.class
-          if (classes.split(' ').find(c => 
-              c === 'wp-block-simple-code-block-ace' ||
-              c === 'wp-block-code')) {
-            return <AceEditor 
-              value={domNode.children[0].children[0].data}
-              fontSize={'15px'}
-              width={'100%'}
-              />
+          const parent = domNode.children[0]
+          let language = ''
+          if (this.hasClass('wp-block-code', classes)) {
+            language = ''
           }
+          else if (this.hasClass('wp-block-simple-code-block-ace', classes)) {
+            language = parent.attribs['data-mode']
+          }
+          else {
+            return
+          }
+          return (<SyntaxHighlighter
+            language={language}
+            style={forest}
+            showLineNumbers={true}
+            customStyle={
+              { fontSize: '12px', borderRadius: '10px', padding:'20px' }}
+          >
+            {parent.children[0].data}
+          </SyntaxHighlighter>)
         }
       }
     }
+
     if (this.props.children !== undefined) {
       content = <Container text >{
         parse(html, options)}</Container>
     }
     else {
-      content = <Container style={{ minHight: '100px', fontSize:'120%' }}>
+      content = <Container style={{ minHight: '100px', fontSize: '120%', textAlign:'justify' }}>
         <Loader active />
       </Container>
     }

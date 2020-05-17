@@ -63,8 +63,6 @@ componentDidUpdate() {
   if (this.locationPathname !== this.props.location.pathname) {
     if (this.props.posts.list.length > 0)
       this.props.resetPosts()
-    //window.scrollTo({top:0, behavior:'smooth'})
-    window.scrollTo({ top: document.getElementById('cards').offsetTop })
     if (this.props.action=== HOME || this.props.action=== FETCH_CAT_INFO || this.props.action=== FETCH_TAG_INFO) {
       this.locationPathname = this.props.location.pathname
       this.fetchPosts()  // Carica primi posts
