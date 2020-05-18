@@ -29,7 +29,7 @@ class Blog extends Component {
 
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
-    this.locationPathname = this.props.locationPathname
+    this.locationPathname = this.props.location.pathname
   }
 
   menuHeight() {
@@ -40,17 +40,17 @@ class Blog extends Component {
     const y = document.getElementById('first-segment').offsetTop - this.menuHeight()
     setTimeout(() => {
       window.scrollTo(0, y)
-    }, 200)    
+    }, 200)
   }
 
   locationChanged() {
-    if (this.locationPathname !== this.props.locationPathname) return true; else return false;
+    if (this.locationPathname !== this.props.location.pathname) return true; else return false;
   }
-  
+
   componentDidUpdate() {
     if (this.locationChanged()) {
       this.scrollTop();
-      this.locationPathname = this.props.locationPathname
+      this.locationPathname = this.props.location.pathname
     }
   }
 
@@ -58,34 +58,27 @@ class Blog extends Component {
     document.title = `${RT_API.siteName}`;
     this.title = ''
     this.content = null
-    switch (this.props.locationType) {
+    switch (this.props.location.type) {
       case HOME:
         document.title += ` - ${RT_API.siteDescription}`;
         this.title = 'Posts'
-        this.content = <PostsCard />
+        this.content = <PostsCard tax={''} />
         break;
       case SINGLE:
-        // POost arrivato
-        if (this.props.action === FETCH_POST) {
-          const post = this.props.posts.list[0]
-          this.title = post.title.rendered
-          this.content = <Article>{post.content.rendered}</Article>
-        } else {
-          this.title = ''
-          this.content = <Article /> // fetching in corso..  
-        }
+        this.title = ''
+        this.content = <Article /> // fetching in corso..  
         break;
       case TAG:
-        const tagName =  this.props.tagName || ''
+        const tagName = this.props.tag.name || ''
         this.title = 'Tag ' + tagName
         document.title += ' - ' + tagName
-        this.content = <PostsCard />
+        this.content = <PostsCard tax={'tags'} />
         break;
       case CATEGORY:
-        const catName = this.props.catName || ''
+        const catName = this.props.cat.name || ''
         this.title = 'Categoria ' + catName
         document.title += ' - ' + catName
-        this.content = <PostsCard />
+        this.content = <PostsCard tax={'categories'} />
         break;
       case NOT_FOUND:
         document.title += ' - Not found';
@@ -249,14 +242,11 @@ const BlogLayout = ({ children, title }) => (
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({ fetchPosts, dispatch }), dispatch)
 }
-function mapStateToProps(state) {
+function mapStateToProps({ location, cat, tag }) {
   return {
-    locationType: state.location.type,
-    locationPathname: state.location.pathname,
-    action: state.action,
-    catName: state.cat.name,
-    tagName: state.tag.name,
-    posts: state.posts
+    location,
+    cat,
+    tag
   }
 }
 

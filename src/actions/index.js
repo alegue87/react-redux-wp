@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-export const RESET_POSTS = 'RESET_POSTS';
+export const INIT_POSTS = 'INIT_POSTS';
 export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
@@ -24,42 +24,75 @@ const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
-export function resetPosts(dispatch) {
-  return (dispatch) => {
+export function init(dispatch) {
+  return (dispatch, getState, bag) => {
+    console.log("Init posts for location type " + getState().location.type)
     dispatch({
-      type: RESET_POSTS
+      type: INIT_POSTS
     });
   }
 }
 
 export function fetchPosts({
-    post_type = 'posts',
-    per_page = 1,
-    page = 1,
-    tax = {type:'', id: 0},
-    context = '_embed'
-  }) {
-  let tax_query = ''
-  if(tax.type !== ''){
-    tax_query = `&${tax.type}=${tax.id}`
-  }
+  post_type = 'posts',
+  per_page = 1,
+  page = 1,
+  tax = '',
+  context = '_embed',
+  appendToPreviousPosts = false,
+}) {
   return function (dispatch, getState, bag) {
-    let prevList = []
-    if(page>1){
-      const state = getState()
-      prevList = state.posts.list;
-    }
 
+    dispatch({
+      type: FETCHING_POSTS
+    })
+
+    if (tax === 'tags' || tax === 'categories') {
+      const slug = getState().location.payload.slug
+      fetchTaxId(tax, slug, fetchPostsAndDispatch, dispatch)
+    }
+    else {
+      fetchPostsAndDispatch('', dispatch)
+    }
+  }
+
+  function fetchTaxId(tax, slug, cb, dispatch) {
+    const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
+    axios.get(taxIdUrl)
+      .then(response => {
+        const taxId = response.data[0].id// nota: uno slug può avere anche più taxId  
+        const tax_query = `&${tax}=${taxId}`
+        cb(tax_query, dispatch)
+      })
+  }
+
+  function fetchPostsAndDispatch(tax_query = '', dispatch) {
     let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}${tax_query}`
     axios.get(postsUrl)
       .then(response => {
+
+        let postsList = []
+        if (appendToPreviousPosts) {
+          let prevList = []
+          if (page > 1) {
+            const state = getState()
+            prevList = state.posts.list;
+          }
+          postsList = prevList.concat(response.data)
+        }
+        else {
+          postsList = response.data
+        }
+
         dispatch({
           type: FETCH_POSTS,
           payload: {
-            list: prevList.concat(response.data),
+            list: postsList,
             totalPages: response.headers['x-wp-totalpages'],
             total: response.headers['x-wp-total'],
-            page: page
+            page: page,
+            tax: tax,
+            state: FETCH_POSTS
           }
         });
       });
@@ -74,18 +107,6 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, post_type = 'po
       slug = bag.action.payload.slug
     }
 
-    function fetchPosts(post_type = 'posts', tax, taxId, offset = 0) {
-      const postsUrl = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&offset=${offset}&per_page=1`;
-      axios.get(postsUrl)
-        .then(response => {
-          dispatch({
-            type: CATEGORY_POSTS,
-            payload: {
-              list: response.data
-            }
-          });
-        });
-    }
     if (taxId === undefined || !taxId) {
       const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
       axios.get(taxIdUrl)
@@ -97,6 +118,19 @@ export function fetchPostsFromTax(tax = 'categories', taxId = 0, post_type = 'po
     }
     else {
       fetchPosts(post_type, tax, taxId);
+    }
+
+    function fetchPosts(post_type = 'posts', tax, taxId, offset = 0) {
+      const postsUrl = `${WP_API_ENDPOINT}/${post_type}?_embed&${tax}=${taxId}&offset=${offset}&per_page=1`;
+      axios.get(postsUrl)
+        .then(response => {
+          dispatch({
+            type: CATEGORY_POSTS,
+            payload: {
+              list: response.data
+            }
+          });
+        });
     }
   }
 }
@@ -148,17 +182,20 @@ export function getTaxIdFromSlug(tax, slug) {
   }
 }
 
-export function fetchPost(prettyPermalink) {
+export function fetchPost() {
   return function (dispatch, getState, bag) {
-    if (bag !== undefined)
-      prettyPermalink = bag.action.payload.slug || prettyPermalink;
+    dispatch({
+      type: FETCHING_POSTS
+    })
+    const prettyPermalink = getState().location.payload.slug
 
     axios.get(`${PRETTYPERMALINK_ENDPOINT}${prettyPermalink}`)
       .then(response => {
         dispatch({
           type: FETCH_POST,
           payload: {
-            list: [response.data]
+            list: [response.data],
+            state: FETCH_POST
           }
         });
       });
