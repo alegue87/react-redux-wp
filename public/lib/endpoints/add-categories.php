@@ -11,6 +11,8 @@ if( !class_exists('Add_categories_to_post') ){
     function __constructor(){}
 
     function init(){
+      if(is_admin())return;
+      
       add_action('rest_api_init', function(){
         register_rest_field('post', 'categories', array(
           'get_callback' => function($post){

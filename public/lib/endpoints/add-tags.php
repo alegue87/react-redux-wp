@@ -13,6 +13,8 @@ if( !class_exists('Add_tags_to_post') ){
     function __construct(){}
 
     function init(){
+      if(is_admin()) return;
+      
       add_action('rest_api_init', function(){
         register_rest_field('post', 'tags', array(
           'get_callback' => function($post){

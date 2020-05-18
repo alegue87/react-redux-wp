@@ -2,8 +2,7 @@
 
 import {
   INIT_POSTS, FETCHING_POSTS,
-  FETCH_POSTS, FETCH_POST, SEARCH_POSTS, 
-  CATEGORY_POSTS,  } from '../actions';
+  FETCH_POSTS, FETCH_POST, SEARCH_POSTS, } from '../actions';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -23,7 +22,6 @@ export default (state = {}, action) => {
     case FETCH_POSTS:
     case FETCH_POST:
     case SEARCH_POSTS:
-    case CATEGORY_POSTS:
       return action.payload;
     default: return state;
   }
