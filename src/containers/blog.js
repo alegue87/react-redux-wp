@@ -4,12 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
   fetchPosts,
-  BLOG, BLOG_PAGE, HOME, SINGLE, TAG, CATEGORY, FETCH_POST
+  HOME, SINGLE, TAG, CATEGORY, FETCH_POST
 } from '../actions/index';
 import { NOT_FOUND } from 'redux-first-router';
-// import Header from '../components/header';
-import Main from '../components/main';
-import Footer from '../components/footer';
 import Article from '../components/article'
 import {
   Button,
@@ -21,7 +18,7 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react'
-import ResponsiveContainer from './responsive';
+import ResponsiveContainer from './responsive/index';
 import PostsCard from './parts/postsCard'
 
 
@@ -37,7 +34,10 @@ class Blog extends Component {
   }
 
   scrollTop() {
-    const y = document.getElementById('first-segment').offsetTop - this.menuHeight()
+    const y = document.getElementById('section-title')
+      .parentElement // segment
+      .parentElement // blog
+      .offsetTop
     setTimeout(() => {
       window.scrollTo(0, y)
     }, 200)
@@ -65,7 +65,7 @@ class Blog extends Component {
         this.content = <PostsCard tax={''} />
         break;
       case SINGLE:
-        this.title = ''
+        this.title = this.props.postTitle
         this.content = <Article /> // fetching in corso..  
         break;
       case TAG:
@@ -96,6 +96,7 @@ class Blog extends Component {
       <BlogLayout>
         <Container text>
           <h1
+            id='section-title'
             style={{ marginBottom: '30px', textAlign: 'center' }}
             dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
         </Container>
@@ -106,9 +107,9 @@ class Blog extends Component {
 }
 
 
-const BlogLayout = ({ children, title }) => (
+const BlogLayout = ({ children }) => (
   <ResponsiveContainer>
-    <Segment id={'first-segment'}>
+    <Segment>
       {children}
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
@@ -242,11 +243,15 @@ const BlogLayout = ({ children, title }) => (
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({ fetchPosts, dispatch }), dispatch)
 }
-function mapStateToProps({ location, cat, tag }) {
+function mapStateToProps({ location, cat, tag, posts }) {
+  let title = ''
+  if(posts.state === FETCH_POST)
+    title = posts.list[0].title.rendered
   return {
     location,
     cat,
-    tag
+    tag,
+    postTitle: title
   }
 }
 

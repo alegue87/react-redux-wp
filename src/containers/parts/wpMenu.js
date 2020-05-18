@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux'
 import Link from 'redux-first-router-link';
 import { connect } from 'react-redux';
 import { fetchMenu } from '../../actions';
+import { Menu, Container } from 'semantic-ui-react'
 
-class Menu extends Component {
+class WpMenu extends Component {
   componentDidMount() {
     this.props.actions.fetchMenu(this.props.name);
   }
@@ -13,24 +14,23 @@ class Menu extends Component {
     return this.props.name === nextProps.menu.name;
   }
 
+  getPayloadFromUrl(url){
+    if(url.indexOf('page_id')>0){
+      return {page_id: url.split('/page_id=')[1]}
+    }
+    else return {}
+  }
+
   renderMenu(menu) {
     if (this.props.name === menu.name) {
       return menu.items.map(item => {
         return (
-          <li key={item.ID} className="nav-item">
-            <Link className="nav-link" to={Menu.getRelativeUrl(item.url)}>{item.title}</Link>
-          </li>
+          <Menu.Item key={item.ID}>
+            <Link to={{type:item.title, payload:this.getPayloadFromUrl(item.url)}}>{item.title}</Link>
+          </Menu.Item>
         );
       });
     }
-  }
-
-  static getRelativeUrl(url) {
-    if (url === window.location.origin) {
-      return '/';
-    }
-
-    return url.substr(window.location.origin.length);
   }
 
   getClasses(location = '') {
@@ -46,9 +46,10 @@ class Menu extends Component {
 
   render() {
     return (
-      <ul className={this.getClasses(this.props.menu.name)}>
+      <Container style={{display:'flex'}} className={this.getClasses(this.props.menu.name)}>
         {this.renderMenu(this.props.menu)}
-      </ul>
+        {this.props.children}
+      </Container>
     );
   }
 }
@@ -63,4 +64,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(WpMenu);
