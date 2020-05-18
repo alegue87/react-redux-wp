@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 import { addRoutes } from 'redux-first-router';
-import { getRelativeUrl} from '../utils';
+import { getRelativeUrl } from '../utils';
 export const INIT_POSTS = 'INIT_POSTS';
 export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -60,7 +60,7 @@ export function fetchPosts({
     // dal primo recupero dei posts, dove
     // viene richiesto per la prima volta.
     let taxId = 0,
-        action = ''
+      action = ''
     switch (tax) {
       case 'tags':
         taxId = state.tag.id
@@ -72,15 +72,15 @@ export function fetchPosts({
         break;
       default: ;
     }
-    if(taxId){
+    if (taxId) {
       const tax_query = `&${tax}=${taxId}`
       fetchPostsAndDispatch(tax_query, state, dispatch)
     }
-    else if(!taxId && (tax === 'categories' || tax === 'tags')) {
+    else if (!taxId && (tax === 'categories' || tax === 'tags')) {
       const slug = state.location.payload.slug
       fetchTaxInfo(action, tax, slug, state, fetchPostsAndDispatch, dispatch)
     }
-    else{
+    else {
       fetchPostsAndDispatch('', state, dispatch)
     }
   }
@@ -255,10 +255,26 @@ export function fetchMenu(menu) {
     axios.get(`${MENU_ENDPOINT}${menu}`)
       .then(response => {
         let newRoutes = {}
-        response.data.map( (item) => {
-          newRoutes[item.title] = {path: getRelativeUrl(item.url)}
+        response.data.map((item) => {
+
+          switch (item.type) {
+            case 'taxonomy':
+            case 'custom':
+              break
+            case 'post_type':
+              let pageId = ''
+              let url = getRelativeUrl(item.url)
+              if (url.indexOf('page_id') > 0) {
+                const id = url.split('=')[1]
+                pageId = `/page_id/${id}`
+              }
+              newRoutes[item.title] = { path: pageId }
+              dispatch(addRoutes(newRoutes))
+              break
+            default: ;
+          }
         })
-        dispatch(addRoutes(newRoutes))
+
         dispatch({
           type: FETCH_MENU,
           payload: { items: response.data, name: menu }
