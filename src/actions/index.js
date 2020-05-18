@@ -6,9 +6,12 @@ export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
 export const FETCH_POST = 'FETCH_POST';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
-export const CATEGORY_POSTS = 'CATEGORY_POSTS';
+
+export const INIT_TAG = 'INIT_TAG';
+export const INIT_CAT = 'INIT_CAT';
 export const FETCH_CAT_INFO = 'FETCH_CAT_INFO';
 export const FETCH_TAG_INFO = 'FETCH_TAG_INFO';
+
 export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
@@ -26,9 +29,14 @@ const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
 export function init(dispatch) {
   return (dispatch, getState, bag) => {
-    console.log("Init posts for location type " + getState().location.type)
     dispatch({
       type: INIT_POSTS
+    });
+    dispatch({
+      type: INIT_CAT
+    });
+    dispatch({
+      type: INIT_TAG
     });
   }
 }
@@ -42,25 +50,50 @@ export function fetchPosts({
   appendToPreviousPosts = false,
 }) {
   return function (dispatch, getState, bag) {
-
+    const state = getState()
     dispatch({
       type: FETCHING_POSTS
     })
 
-    if (tax === 'tags' || tax === 'categories') {
-      const slug = getState().location.payload.slug
-      fetchTaxId(tax, slug, fetchPostsAndDispatch, dispatch)
+    // cerca di recuperare il tax id
+    // dal primo recupero dei posts, dove
+    // viene richiesto per la prima volta.
+    let taxId = 0,
+        action = ''
+    switch (tax) {
+      case 'tags':
+        taxId = state.tag.id
+        action = FETCH_TAG_INFO
+        break
+      case 'categories':
+        taxId = state.cat.id
+        action = FETCH_CAT_INFO
+        break;
+      default: ;
     }
-    else {
+    if(taxId){
+      const tax_query = `&${tax}=${taxId}`
+      fetchPostsAndDispatch(tax_query, dispatch)
+    }
+    else if(!taxId && (tax === 'categories' || tax === 'tags')) {
+      const slug = state.location.payload.slug
+      fetchTaxInfo(action, tax, slug, fetchPostsAndDispatch, dispatch)
+    }
+    else{
       fetchPostsAndDispatch('', dispatch)
     }
   }
 
-  function fetchTaxId(tax, slug, cb, dispatch) {
+  function fetchTaxInfo(action, tax, slug, cb, dispatch) {
     const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
     axios.get(taxIdUrl)
       .then(response => {
-        const taxId = response.data[0].id// nota: uno slug può avere anche più taxId  
+        dispatch({
+          type: action,
+          payload: response.data[0] // TODO: da verificare il significato di questo array
+        })
+
+        const taxId = response.data[0].id// nota: uno slug può avere anche più taxId (?) 
         const tax_query = `&${tax}=${taxId}`
         cb(tax_query, dispatch)
       })

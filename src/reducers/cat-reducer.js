@@ -1,15 +1,21 @@
-import { FETCH_CAT_INFO, CATEGORY } from '../actions';
+import { FETCH_CAT_INFO, CATEGORY, INIT_CAT } from '../actions';
 
-export default (state = { taxId: 0, slug: '' }, action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case FETCH_CAT_INFO:
-      return {
-        taxId: action.payload[0].id,
-        slug: action.payload[0].slug,
-        name: action.payload[0].name,
-      }
     case CATEGORY:
       return action.payload;
+    case INIT_CAT:
+      return {
+        id: 0,          // taxId
+        count: 0,       // number of posts
+        description: '',
+        name: '',
+        slug: '',
+        taxonomy: '',
+        meta: [],
+        _links: {}
+      }
     default:
       return state;
   }
