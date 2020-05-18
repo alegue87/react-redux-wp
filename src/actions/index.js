@@ -77,14 +77,14 @@ export function fetchPosts({
     }
     else if(!taxId && (tax === 'categories' || tax === 'tags')) {
       const slug = state.location.payload.slug
-      fetchTaxInfo(action, tax, slug, fetchPostsAndDispatch, dispatch)
+      fetchTaxInfo(action, tax, slug, state, fetchPostsAndDispatch, dispatch)
     }
     else{
-      fetchPostsAndDispatch('', dispatch)
+      fetchPostsAndDispatch('', state, dispatch)
     }
   }
 
-  function fetchTaxInfo(action, tax, slug, cb, dispatch) {
+  function fetchTaxInfo(action, tax, slug, state, cb, dispatch) {
     const taxIdUrl = `${WP_API_ENDPOINT}/${tax}?slug=${slug}`;
     axios.get(taxIdUrl)
       .then(response => {
@@ -95,11 +95,11 @@ export function fetchPosts({
 
         const taxId = response.data[0].id// nota: uno slug può avere anche più taxId (?) 
         const tax_query = `&${tax}=${taxId}`
-        cb(tax_query, dispatch)
+        cb(tax_query, state, dispatch)
       })
   }
 
-  function fetchPostsAndDispatch(tax_query = '', dispatch) {
+  function fetchPostsAndDispatch(tax_query = '', state, dispatch) {
     let postsUrl = `${WP_API_ENDPOINT}/${post_type}?${context}&per_page=${per_page}&page=${page}${tax_query}`
     axios.get(postsUrl)
       .then(response => {
@@ -108,7 +108,6 @@ export function fetchPosts({
         if (appendToPreviousPosts) {
           let prevList = []
           if (page > 1) {
-            const state = getState()
             prevList = state.posts.list;
           }
           postsList = prevList.concat(response.data)
