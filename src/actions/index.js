@@ -73,7 +73,7 @@ export function fetchPosts({
     }
     if(taxId){
       const tax_query = `&${tax}=${taxId}`
-      fetchPostsAndDispatch(tax_query, dispatch)
+      fetchPostsAndDispatch(tax_query, state, dispatch)
     }
     else if(!taxId && (tax === 'categories' || tax === 'tags')) {
       const slug = state.location.payload.slug
