@@ -1,12 +1,12 @@
 import React from 'react'
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Image } from 'semantic-ui-react'
 import { CATEGORY, TAG, SINGLE } from '../../actions';
 import Link from 'redux-first-router-link';
 
 const PostCard = ({post, style}) => {
   return(
     <Card style={style}>
-      <Image src={post.featured_image_url.medium} wrapped ui={false} />
+      <Image src={renderImage(post.featured_image_url)} wrapped ui={false} />
       <Card.Content>
         <Card.Header>
           <Link 
@@ -26,6 +26,11 @@ const PostCard = ({post, style}) => {
       </Card.Content>
     </Card>
   )
+}
+
+function renderImage(image){
+  if(image === undefined) return
+  return image.medium
 }
 
 function renderCategories(categories) {
@@ -50,6 +55,7 @@ function renderCategories(categories) {
 }
 
 function renderTags(tags) {
+  if(tags === undefined) return
   return tags.map((tag) => {
     return (
       <span key={tag.id} style={{ marginRight: '5px' }}>

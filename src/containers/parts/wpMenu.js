@@ -36,27 +36,18 @@ class WpMenu extends Component {
         }}>{item.title}</Link>
       case 'custom':
         return <a href={item.url}>{item.title}</a>
-      case 'post_type':// type: page | post
-        let pageId = ''
-        let url = getRelativeUrl(item.url)
-        if (url.indexOf('page_id') > 0) {
-          const id = url.split('=')[1]
-          pageId = `/page_id/${id}`
-          return <Link to={{
-            type: item.title,
-            payload: {
-              path: pageId
-            }
-          }}>{item.title}</Link>
-        }
-        else {
-          return <Link to={{
-            type: SINGLE,
-            payload: {
-              slug: getRelativeUrl(item.url).replace(/\//g, '')
-            }
-          }}>{item.title}</Link>
-        }
+      case 'post_type':
+        // type: page | post
+        // Se il relative url è del tipo ?page_id=num 
+        // significa che la pagina inserita nel menu è 
+        // in stato draft ( e non ci dovrebbe essere )
+        // quindi è ok che sia not-found
+        return <Link to={{
+          type: SINGLE,
+          payload: {
+            slug: getRelativeUrl(item.url).replace(/\//g, '')
+          }
+        }}>{item.title}</Link>
       default: ;
     }
   }

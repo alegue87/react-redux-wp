@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
-import { addRoutes } from 'redux-first-router';
-import { getRelativeUrl } from '../utils';
+
 export const INIT_POSTS = 'INIT_POSTS';
 export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -254,31 +253,12 @@ export function fetchMenu(menu) {
   return function (dispatch) {
     axios.get(`${MENU_ENDPOINT}${menu}`)
       .then(response => {
-        let newRoutes = {}
         response.data.map((item) => {
-
-          switch (item.type) {
-            case 'taxonomy':
-            case 'custom':
-              break
-            case 'post_type':
-              let pageId = ''
-              let url = getRelativeUrl(item.url)
-              if (url.indexOf('page_id') > 0) {
-                const id = url.split('=')[1]
-                pageId = `/page_id/${id}`
-              }
-              newRoutes[item.title] = { path: pageId }
-              dispatch(addRoutes(newRoutes))
-              break
-            default: ;
-          }
+          dispatch({
+            type: FETCH_MENU,
+            payload: { items: response.data, name: menu }
+          });
         })
-
-        dispatch({
-          type: FETCH_MENU,
-          payload: { items: response.data, name: menu }
-        });
       });
   }
 }
