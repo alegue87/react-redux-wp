@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import {
-  Button,
   Container,
   Responsive,
   Segment,
@@ -11,6 +10,9 @@ import {
 } from 'semantic-ui-react'
 import Heading from '../parts/heading';
 import WpMenu from '../parts/wpMenu'
+import { connect } from 'react-redux'
+import { HOME } from '../../actions/index'
+import './desktop.css'
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -30,39 +32,62 @@ class DesktopContainer extends Component {
 
   render() {
     const { children } = this.props
+    const page = this.props.location.type
     const { fixed } = this.state
 
-    return (
-      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
-        >
-          <Segment
-            inverted
-            textAlign='center'
-            style={{ minHeight: 700, padding: '1em 0em' }}
-            vertical
+    if (page === HOME) {
+      return (
+        <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+          <Visibility
+            once={false}
+            onBottomPassed={this.showFixedMenu}
+            onBottomPassedReverse={this.hideFixedMenu}
           >
-            <Menu
-              fixed={fixed ? 'top' : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size='large'
+            <Segment
+              inverted
+              textAlign='center'
+              vertical
+              className={'main-segment'}
             >
-              <Container>
-                <WpMenu name={'main_menu'} fixed={fixed}/>
-              </Container>
-            </Menu>
-            <Heading />
-          </Segment>
-        </Visibility>
+              <Menu
+                fixed={fixed ? 'top' : null}
+                inverted={!fixed}
+                pointing={!fixed}
+                secondary={!fixed}
+                size='large'
+              >
+                <Container>
+                  <WpMenu name={'main_menu'} fixed={fixed} />
+                </Container>
+              </Menu>
+              <Heading />
+            </Segment>
+          </Visibility>
 
-        {children}
-      </Responsive>
-    )
+          {children}
+        </Responsive>
+      )
+    }
+    else {
+      return (
+        <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+          <Menu
+            id={'top-menu'}
+            fixed={'top'}
+            inverted={false}
+            pointing={false}
+            secondary={false}
+            size='large'
+          >
+            <Container>
+              <WpMenu name={'main_menu'} fixed={true} />
+            </Container>
+          </Menu>
+          <Segment/>
+          {children}
+        </Responsive>
+      )
+    }
   }
 }
 
@@ -70,4 +95,7 @@ DesktopContainer.propTypes = {
   children: PropTypes.node,
 }
 
-export default DesktopContainer;
+function mapStateToProps({ location }) {
+  return { location }
+}
+export default connect(mapStateToProps, null)(DesktopContainer);
