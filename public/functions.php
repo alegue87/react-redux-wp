@@ -12,3 +12,5 @@ $Theme_Enqueue->init();
 
 $Theme_Endpoints = new Theme_Endpoints();
 $Theme_Endpoints->init();
+
+show_admin_bar(false);

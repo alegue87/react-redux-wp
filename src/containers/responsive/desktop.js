@@ -53,16 +53,7 @@ class DesktopContainer extends Component {
               size='large'
             >
               <Container>
-                <WpMenu name={'main_menu'}>
-                  <Menu.Item position='right'>
-                    <Button as='a' inverted={!fixed}>
-                      Log in
-                    </Button>
-                    <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-                      Sign Up
-                    </Button>
-                  </Menu.Item>
-                </WpMenu>
+                <WpMenu name={'main_menu'} fixed={fixed}/>
               </Container>
             </Menu>
             <Heading />
