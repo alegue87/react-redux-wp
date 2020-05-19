@@ -21,6 +21,7 @@ import {
 import ResponsiveContainer from './responsive/index';
 import PostsCard from './parts/postsCard'
 import './blog.css'
+import HTMLReactParser from 'html-react-parser';
 
 class Blog extends Component {
 
@@ -83,11 +84,11 @@ class Blog extends Component {
     return (
       <BlogLayout>
         {/* menu ed heading here */}
-        <Segment className={'section'}>
-          <h1
+        <Segment className={'container section'}>
+          <Header
             id='section-title'
-            dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
-
+            as='h1'
+          >{HTMLReactParser(this.title)}</Header>
           {this.content}
         </Segment>
         {this.extraContent}
