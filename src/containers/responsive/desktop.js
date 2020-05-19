@@ -47,7 +47,7 @@ class DesktopContainer extends Component {
               inverted
               textAlign='center'
               vertical
-              className={'main-segment'}
+              className={'main'}
             >
               <Menu
                 fixed={fixed ? 'top' : null}
@@ -83,7 +83,7 @@ class DesktopContainer extends Component {
               <WpMenu name={'main_menu'} fixed={true} />
             </Container>
           </Menu>
-          <Segment/>
+          <Segment className={'spacer'}/>
           {children}
         </Responsive>
       )

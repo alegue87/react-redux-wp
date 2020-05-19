@@ -30,12 +30,21 @@ const Heading = ({ mobile }) => (
         marginTop: mobile ? '0.5em' : '1.5em',
       }}
     />
-    <Button primary size='huge'>
-      Get Started
-      <Icon name='right arrow' />
+    <Button primary size='huge' onClick={()=>{scrollTo('section')}}>
+      Vedi&nbsp;&nbsp;
+      <Icon name='down arrow' />
     </Button>
   </Container>
 )
+
+function scrollTo(name){
+  const top = document.getElementsByClassName(name)[0].offsetTop
+  window.scroll({
+    top,
+    left:0, 
+    behavior: 'smooth'
+  })
+}
 
 Heading.propTypes = {
   mobile: PropTypes.bool,

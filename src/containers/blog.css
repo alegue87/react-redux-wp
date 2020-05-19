@@ -1,0 +1,11 @@
+
+h1#section-title {
+  margin-bottom: 30px;
+  text-align:center;
+  padding-bottom:10px;
+  border-bottom:1px solid lightgrey;
+}
+
+.segment.section{
+  margin:0px;
+}

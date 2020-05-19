@@ -20,6 +20,7 @@ import {
 } from 'semantic-ui-react'
 import ResponsiveContainer from './responsive/index';
 import PostsCard from './parts/postsCard'
+import './blog.css'
 
 class Blog extends Component {
 
@@ -47,7 +48,7 @@ class Blog extends Component {
     switch (this.props.location.type) {
       case HOME:
         document.title += ` - ${RT_API.siteDescription}`;
-        this.title = 'Posts'
+        this.title = 'Ultimi post inseriti'
         this.content = <PostsCard tax={''} />
         this.extraContent = <ExtraContent />
         break;
@@ -81,13 +82,14 @@ class Blog extends Component {
     this.preRender()
     return (
       <BlogLayout>
-        <Container text style={{marginTop:'30px'}}>
+        {/* menu ed heading here */}
+        <Segment className={'section'}>
           <h1
             id='section-title'
-            style={{ marginBottom: '30px', textAlign: 'center' }}
             dangerouslySetInnerHTML={{ __html: this.title }} /> {/* Utilizzando Header da errore (children)*/}
-        </Container>
-        {this.content}
+
+          {this.content}
+        </Segment>
         {this.extraContent}
         <Footer></Footer>
       </BlogLayout>
