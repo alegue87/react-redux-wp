@@ -5,20 +5,20 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 import forest from 'react-syntax-highlighter/dist/esm/styles/hljs/atelier-forest-light'
 import parse from 'html-react-parser'
 import './article.css'
-import { FETCH_POST, INIT_POSTS, fetchPost } from '../actions'
+import { INIT_POST, FETCHING_POST, FETCH_POST, FETCH_ERROR, fetchPost } from './actions'
 import { bindActionCreators } from 'redux'
 
 class Article extends React.Component {
 
   componentDidMount() {
-    if (this.props.posts.state === INIT_POSTS) {
+    if (this.props.post.state === INIT_POST) {
       this.props.fetchPost()
     }
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     // Location cambiata
-    if(this.props.posts.state === INIT_POSTS){
+    if (this.props.post.state === INIT_POST) {
       this.props.fetchPost()
     }
   }
@@ -61,24 +61,32 @@ class Article extends React.Component {
         }
       }
     }
-    
+
     let content;
-    if (this.props.posts.state === FETCH_POST) {
-      let post = this.props.posts.list[0]
-      content = <Container text >{
-        parse(post.content.rendered, options)}</Container>
+    const state = this.props.post.state
+    switch (state) {
+      case FETCH_POST:
+        let data = this.props.post.data
+        content = <Container text >{
+          parse(data.content.rendered, options)}</Container>
+        break
+      case FETCH_ERROR:
+        content = <Container text>
+          {this.props.post.status === 404 ? 'Post non trovato' : 'Problema nel recupero del post.. riprovare'}
+        </Container>
+        break;
+      default:
+        content = <Container style={{ minHight: '100px', fontSize: '120%', textAlign: 'justify' }}>
+          <Loader active />
+        </Container>;
     }
-    else {
-      content = <Container style={{ minHight: '100px', fontSize: '120%', textAlign: 'justify' }}>
-        <Loader active />
-      </Container>
-    }
+
     return (content)
   }
 }
 
-function mapStateToProps({ posts }) {
-  return { posts }
+function mapStateToProps({ post }) {
+  return { post }
 }
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchPost }, dispatch)

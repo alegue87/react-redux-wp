@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Label, Icon, Loader, Visibility } from 'semantic-ui-react';
-import PostCard from './../../components/main/PostCard';
+import PostCard from '../../components/post-card/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { fetchPosts, FETCHING_POSTS, INIT_POSTS } from '../../actions'

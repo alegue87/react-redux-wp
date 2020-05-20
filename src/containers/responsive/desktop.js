@@ -8,8 +8,8 @@ import {
   Visibility,
   Menu,
 } from 'semantic-ui-react'
-import Heading from '../parts/heading';
-import WpMenu from '../parts/wpMenu'
+import Heading from '../../components/heading';
+import WpMenu from '../../components/wp-menu'
 import { connect } from 'react-redux'
 import { HOME } from '../../actions/index'
 import './desktop.css'

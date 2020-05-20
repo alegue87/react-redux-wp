@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import {
-  fetchPosts,
   HOME, SINGLE, TAG, CATEGORY, FETCH_POST
-} from '../actions/index';
+} from '../../actions/index';
 import { NOT_FOUND } from 'redux-first-router';
-import Article from '../components/article'
+import Article from '../../components/article/index'
 import {
   Button,
   Container,
@@ -18,8 +16,8 @@ import {
   List,
   Segment,
 } from 'semantic-ui-react'
-import ResponsiveContainer from './responsive/index';
-import PostsCard from './parts/postsCard'
+import ResponsiveContainer from '../responsive/index';
+import PostsCard from '../posts-card/index'
 import './blog.css'
 import HTMLReactParser from 'html-react-parser';
 
@@ -54,7 +52,7 @@ class Blog extends Component {
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        this.title = this.props.postTitle
+        this.title = this.props.postTitle || 'Errore'
         this.content = <Article /> // fetching in corso..  
         break;
       case TAG:
@@ -103,13 +101,10 @@ const BlogLayout = ({ children }) => (
   </ResponsiveContainer>
 )
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({ fetchPosts, dispatch }), dispatch)
-}
-function mapStateToProps({ location, cat, tag, posts }) {
+function mapStateToProps({ location, cat, tag, post }) {
   let title = ''
-  if (posts.state === FETCH_POST)
-    title = posts.list[0].title.rendered
+  if (post.state === FETCH_POST)
+    title = post.data.title.rendered
   return {
     location,
     cat,
@@ -118,7 +113,7 @@ function mapStateToProps({ location, cat, tag, posts }) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Blog)
+export default connect(mapStateToProps, null)(Blog)
 
 
 function Footer() {

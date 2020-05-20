@@ -9,7 +9,7 @@ import {
   Segment,
   Sidebar,
 } from 'semantic-ui-react'
-import Heading from '../parts/heading';
+import Heading from '../../components/heading';
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.

@@ -30,18 +30,19 @@ const Heading = ({ mobile }) => (
         marginTop: mobile ? '0.5em' : '1.5em',
       }}
     />
-    <Button primary size='huge' onClick={()=>{scrollTo('section')}}>
+    <Button primary size='huge' onClick={() => { scrollTo('section') }}>
       Vedi&nbsp;&nbsp;
       <Icon name='down arrow' />
     </Button>
   </Container>
 )
 
-function scrollTo(name){
-  const top = document.getElementsByClassName(name)[0].offsetTop
+function scrollTo(name) {
+  const margin = 30
+  const top = document.getElementsByClassName(name)[0].offsetTop-margin
   window.scroll({
     top,
-    left:0, 
+    left: 0,
     behavior: 'smooth'
   })
 }

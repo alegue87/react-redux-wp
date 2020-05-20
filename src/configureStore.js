@@ -1,6 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { connectRoutes } from 'redux-first-router'
 import thunk from 'redux-thunk'
+import post from './components/article/reducer'
 import action from './reducers/action-reducer';
 import posts from './reducers/posts-reducer';
 import menu from './reducers/menu-reducer';
@@ -28,6 +29,7 @@ export default function configureStore(preloadedState) {
     tag,
     cat,
     comments,
+    post,
     location: reducer
   })
   //const pRootReducer = persistReducer(persistConfig, rootReducer)

@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
+import { INIT_POST } from '../components/article/actions'
 export const INIT_POSTS = 'INIT_POSTS';
 export const FETCHING_POSTS = 'FETCHING_POSTS';
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -24,11 +25,13 @@ export const TAG = 'TAG';
 export const CATEGORY = 'CATEGORY';
 
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
-const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
 export function init(dispatch) {
   return (dispatch, getState, bag) => {
+    dispatch({
+      type: INIT_POST
+    });
     dispatch({
       type: INIT_POSTS
     });
@@ -214,25 +217,6 @@ export function getTaxIdFromSlug(tax, slug) {
   }
 }
 
-export function fetchPost() {
-  return function (dispatch, getState, bag) {
-    dispatch({
-      type: FETCHING_POSTS
-    })
-    const prettyPermalink = getState().location.payload.slug
-
-    axios.get(`${PRETTYPERMALINK_ENDPOINT}${prettyPermalink}`)
-      .then(response => {
-        dispatch({
-          type: FETCH_POST,
-          payload: {
-            list: [response.data],
-            state: FETCH_POST
-          }
-        });
-      });
-  }
-}
 
 export function fetchTaxInfo(tax, postId, tagIds) {
   return function (dispatch) {
