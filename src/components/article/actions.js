@@ -4,7 +4,7 @@ import WpApi from '../../api/wordpress/index'
 export const INIT_POST = 'INIT_POST'
 export const FETCHING_POST = 'FETCHING_POST'
 export const FETCH_POST = 'FETCH_POST'
-export const FETCH_ERROR = 'FETCH_ERROR'
+export const FETCH_POST_ERROR = 'FETCH_POST_ERROR'
 
 export function fetchPost() {
   return function (dispatch, getState, bag) {
@@ -24,8 +24,7 @@ export function fetchPost() {
         });
       })
       .catch((error) => {
-        console.log(error.response)
-        dispatch({ type: FETCH_ERROR, payload: error.response })
+        dispatch({ type: FETCH_POST_ERROR, payload: error.response || '' })
       })
   }
 }

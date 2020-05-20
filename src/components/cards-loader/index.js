@@ -1,11 +1,11 @@
 import React from 'react';
 import { Grid, Label, Icon, Loader, Visibility } from 'semantic-ui-react';
-import PostCard from '../../components/post-card/index';
+import PostCard from '../post-card/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { fetchPosts, FETCHING_POSTS, INIT_POSTS } from '../../actions'
+import { fetchPosts, FETCHING_POSTS, INIT_POSTS } from './actions'
 
-class PostsCard extends React.Component {
+class CardsLoader extends React.Component {
   constructor(props) {
     super(props)
     this.perColumn = 4
@@ -91,5 +91,5 @@ function mapStateToProps({ posts }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchPosts, dispatch }, dispatch)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(PostsCard)
+export default connect(mapStateToProps, mapDispatchToProps)(CardsLoader)
 

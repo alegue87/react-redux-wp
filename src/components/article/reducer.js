@@ -1,4 +1,4 @@
-import { INIT_POST, FETCH_POST, FETCHING_POST, FETCH_ERROR } from './actions'
+import { INIT_POST, FETCH_POST, FETCHING_POST, FETCH_POST_ERROR } from './actions'
 
 export default (state = {}, action) => {
 
@@ -7,7 +7,7 @@ export default (state = {}, action) => {
     case FETCHING_POST:
       return { state: action.type }
     case FETCH_POST:
-    case FETCH_ERROR:    
+    case FETCH_POST_ERROR:    
       return Object.assign(action.payload, { state: action.type })
     default:
       return state

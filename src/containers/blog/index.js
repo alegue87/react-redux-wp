@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  HOME, SINGLE, TAG, CATEGORY, FETCH_POST
+  HOME, SINGLE, TAG, CATEGORY
 } from '../../actions/index';
 import { NOT_FOUND } from 'redux-first-router';
 import Article from '../../components/article/index'
@@ -17,7 +17,7 @@ import {
   Segment,
 } from 'semantic-ui-react'
 import ResponsiveContainer from '../responsive/index';
-import PostsCard from '../posts-card/index'
+import CardsLoader from '../../components/cards-loader/index'
 import './blog.css'
 import HTMLReactParser from 'html-react-parser';
 
@@ -39,6 +39,9 @@ class Blog extends Component {
     }
   }
 
+  getSectionTitle(type) {
+  }
+
   preRender() {
     document.title = `${RT_API.siteName}`;
     this.title = ''
@@ -48,24 +51,17 @@ class Blog extends Component {
       case HOME:
         document.title += ` - ${RT_API.siteDescription}`;
         this.title = 'Ultimi post inseriti'
-        this.content = <PostsCard tax={''} />
+        this.content = <CardsLoader tax={''} />
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        this.title = this.props.postTitle || 'Errore'
-        this.content = <Article /> // fetching in corso..  
+        this.content = <Article />
         break;
       case TAG:
-        const tagName = this.props.tag.name || ''
-        this.title = 'Tag ' + tagName
-        document.title += ' - ' + tagName
-        this.content = <PostsCard tax={'tags'} />
+        this.content = <CardsLoader tax={'tags'} />
         break;
       case CATEGORY:
-        const catName = this.props.cat.name || ''
-        this.title = 'Categoria ' + catName
-        document.title += ' - ' + catName
-        this.content = <PostsCard tax={'categories'} />
+        this.content = <CardsLoader tax={'categories'} />
         break;
       case NOT_FOUND:
         document.title += ' - Not found';
@@ -74,19 +70,14 @@ class Blog extends Component {
       default:
         ;
     }
-
-
   }
+
   render() {
     this.preRender()
     return (
       <BlogLayout>
-        {/* menu ed heading here */}
+        {/* menu ed heading is here */}
         <Segment className={'container section'}>
-          <Header
-            id='section-title'
-            as='h1'
-          >{HTMLReactParser(this.title)}</Header>
           {this.content}
         </Segment>
         {this.extraContent}
@@ -101,15 +92,9 @@ const BlogLayout = ({ children }) => (
   </ResponsiveContainer>
 )
 
-function mapStateToProps({ location, cat, tag, post }) {
-  let title = ''
-  if (post.state === FETCH_POST)
-    title = post.data.title.rendered
+function mapStateToProps({ location }) {
   return {
-    location,
-    cat,
-    tag,
-    postTitle: title
+    location
   }
 }
 

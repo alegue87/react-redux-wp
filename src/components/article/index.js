@@ -5,7 +5,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter'
 import forest from 'react-syntax-highlighter/dist/esm/styles/hljs/atelier-forest-light'
 import parse from 'html-react-parser'
 import './article.css'
-import { INIT_POST, FETCHING_POST, FETCH_POST, FETCH_ERROR, fetchPost } from './actions'
+import { INIT_POST, FETCH_POST, FETCH_POST_ERROR, fetchPost } from './actions'
 import { bindActionCreators } from 'redux'
 
 class Article extends React.Component {
@@ -70,7 +70,7 @@ class Article extends React.Component {
         content = <Container text >{
           parse(data.content.rendered, options)}</Container>
         break
-      case FETCH_ERROR:
+      case FETCH_POST_ERROR:
         content = <Container text>
           {this.props.post.status === 404 ? 'Post non trovato' : 'Problema nel recupero del post.. riprovare'}
         </Container>
