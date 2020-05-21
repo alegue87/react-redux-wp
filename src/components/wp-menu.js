@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import Link from 'redux-first-router-link';
 import { connect } from 'react-redux';
-import { fetchMenu, SINGLE, HOME } from '../actions/index';
+import { SINGLE, HOME } from '../routes/index';
+import { fetchMenu } from '../actions/index'
 import { Menu, Container, Button } from 'semantic-ui-react'
 import { getRelativeUrl } from '../utils/index'
 

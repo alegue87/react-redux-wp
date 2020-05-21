@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Loader } from 'semantic-ui-react'
+import { Container, Loader, Header } from 'semantic-ui-react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import forest from 'react-syntax-highlighter/dist/esm/styles/hljs/atelier-forest-light'
 import parse from 'html-react-parser'
 import './article.css'
 import { INIT_POST, FETCH_POST, FETCH_POST_ERROR, fetchPost } from './actions'
 import { bindActionCreators } from 'redux'
+import HTMLReactParser from 'html-react-parser';
+
 
 class Article extends React.Component {
 
@@ -62,23 +64,29 @@ class Article extends React.Component {
       }
     }
 
-    let content;
+    let content
     const state = this.props.post.state
     switch (state) {
       case FETCH_POST:
-        let data = this.props.post.data
-        content = <Container text >{
-          parse(data.content.rendered, options)}</Container>
+        let { post } = this.props
+        content =
+          <Container text >
+            <Header as='h1' style={{textAlign:'center'}}>{HTMLReactParser(post.data.title.rendered)}</Header>
+            {parse(post.data.content.rendered, options)}
+          </Container>
         break
       case FETCH_POST_ERROR:
-        content = <Container text>
-          {this.props.post.status === 404 ? 'Post non trovato' : 'Problema nel recupero del post.. riprovare'}
-        </Container>
+        content =
+          <Container text>
+            <Header as='h1'>Errore</Header>
+            {this.props.post.status === 404 ? 'Post non trovato' : 'Problema nel recupero del post.. riprovare'}
+          </Container>
         break;
       default:
-        content = <Container style={{ minHight: '100px', fontSize: '120%', textAlign: 'justify' }}>
-          <Loader active />
-        </Container>;
+        content =
+          <Container style={{ minHight: '100px', fontSize: '120%', textAlign: 'justify' }}>
+            <Loader active />
+          </Container>
     }
 
     return (content)

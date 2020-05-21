@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Image } from 'semantic-ui-react'
-import { CATEGORY, TAG, SINGLE } from '../../actions';
+import { CATEGORY, TAG, SINGLE } from '../../routes/index';
 import Link from 'redux-first-router-link';
 
 const PostCard = ({post, style}) => {

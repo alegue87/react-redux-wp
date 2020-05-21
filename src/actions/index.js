@@ -1,9 +1,6 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-import { INIT_POST } from '../components/article/actions'
-import { INIT_POSTS, INIT_TAG, INIT_CAT } from '../components/cards-loader/actions'
-
 export const SEARCH_POSTS = 'SEARCH_POSTS';
 
 
@@ -11,31 +8,10 @@ export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 // Pages ( state.location.type )
-export const HOME = 'HOME';
-export const BLOG = 'BLOG';
-export const BLOG_PAGE = 'BLOG_PAGE';
-export const SINGLE = 'SINGLE';
-export const TAG = 'TAG';
-export const CATEGORY = 'CATEGORY';
 
 const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
-export function init(dispatch) {
-  return (dispatch, getState, bag) => {
-    dispatch({
-      type: INIT_POST
-    });
-    dispatch({
-      type: INIT_POSTS
-    });
-    dispatch({
-      type: INIT_CAT
-    });
-    dispatch({
-      type: INIT_TAG
-    });
-  }
-}
+
 
 
 

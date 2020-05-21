@@ -1,9 +1,15 @@
 import React from 'react';
-import { Grid, Label, Icon, Loader, Visibility } from 'semantic-ui-react';
+import { Grid, Label, Icon, Loader, Visibility, Header, Container } from 'semantic-ui-react';
 import PostCard from '../post-card/index';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { fetchPosts, FETCHING_POSTS, INIT_POSTS } from './actions'
+import {
+  fetchPosts,
+  INIT_POSTS, FETCHING_POSTS,
+  FETCH_CAT_INFO, FETCH_TAG_INFO,
+  FETCH_CAT_INFO_ERROR, FETCH_TAG_INFO_ERROR, FETCH_POSTS_ERROR
+} from './actions'
+import { HOME, CATEGORY, TAG } from '../../routes/index'
 
 class CardsLoader extends React.Component {
   constructor(props) {
@@ -17,7 +23,7 @@ class CardsLoader extends React.Component {
     if (this.props.posts.page < totalPages) {
       this.props.fetchPosts({
         post_type: 'posts',
-        per_page: this.perColumn*2,
+        per_page: this.perColumn * 2,
         page: this.props.posts.page + 1,
         tax: this.props.tax,
         appendToPreviousPosts: true, // append mode on
@@ -64,28 +70,55 @@ class CardsLoader extends React.Component {
 
   }
 
+  getContent() {
+    const { posts, cat, tag, location } = this.props
+    if (
+      posts.state === FETCH_POSTS_ERROR ||
+      cat.state === FETCH_CAT_INFO_ERROR ||
+      tag.state === FETCH_TAG_INFO_ERROR)
+      return (
+        <ErrorContainer message='Problema durante il recupero dei posts' />
+      )
+    else {
+      let title = ''
+      if ( location.type === CATEGORY && cat.state === FETCH_CAT_INFO)
+        title = 'Categoria ' + cat.name
+      else if ( location.type === TAG && tag.state === FETCH_TAG_INFO)
+        title = 'Tag ' + tag.name
+      else if ( location.type === HOME )
+        title = 'Ultimi posts inseriti'
+      else
+        title = ''
+
+      return (
+        <Visibility
+          once={false}
+          onBottomVisible={this.fetchPosts.bind(this)}
+        >
+          <Header as='h1' style={{ textAlign: 'center' }}>{title}</Header>
+          <Grid id={'cards'} container stackable centered>
+            {this.props.posts.list.length > 0 && this.renderCardsRows(this.props.posts.list)}
+            <Grid.Row>
+              <Label>
+                {this.props.posts.page < this.props.posts.totalPages && (<Icon name='angle double down' />)}
+                {this.props.posts.list.length}/{this.props.posts.total} Posts</Label>
+              {posts.state === FETCHING_POSTS && <Loader active />}
+            </Grid.Row>
+          </Grid>
+        </Visibility>
+      )
+    }
+  }
+
   render() {
     return (
-      <Visibility
-        once={false}
-        onBottomVisible={this.fetchPosts.bind(this)}
-      >
-        <Grid id={'cards'} container stackable centered>
-          {this.props.posts.list.length > 0 && this.renderCardsRows(this.props.posts.list)}
-          <Grid.Row>
-            <Label>
-              {this.props.posts.page < this.props.posts.totalPages && (<Icon name='angle double down' />)}
-              {this.props.posts.list.length}/{this.props.posts.total} Posts</Label>
-            {this.props.posts.state === FETCHING_POSTS && <Loader active />}
-          </Grid.Row>
-        </Grid>
-      </Visibility>
+      this.getContent()
     )
   }
 }
 
-function mapStateToProps({ posts }) {
-  return { posts };
+function mapStateToProps({ posts, cat, tag, location }) {
+  return { posts, cat, tag, location };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -93,3 +126,10 @@ function mapDispatchToProps(dispatch) {
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CardsLoader)
 
+function ErrorContainer({ message }) {
+  return (
+    <Container>
+      <Header as='h1'>Errore</Header>
+      {message}
+    </Container>)
+}

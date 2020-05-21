@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   HOME, SINGLE, TAG, CATEGORY
-} from '../../actions/index';
+} from '../../routes/index';
 import { NOT_FOUND } from 'redux-first-router';
 import Article from '../../components/article/index'
 import {
@@ -20,6 +20,15 @@ import ResponsiveContainer from '../responsive/index';
 import CardsLoader from '../../components/cards-loader/index'
 import './blog.css'
 import HTMLReactParser from 'html-react-parser';
+
+import {
+  FETCH_TAG_INFO_ERROR,
+  FETCH_CAT_INFO_ERROR,
+  FETCH_CAT_INFO,
+  FETCH_TAG_INFO
+} from '../../components/cards-loader/actions'
+import { FETCH_POST_ERROR, FETCH_POST } from '../../components/article/actions'
+
 
 class Blog extends Component {
 
@@ -39,18 +48,43 @@ class Blog extends Component {
     }
   }
 
-  getSectionTitle(type) {
+  getSingleTitle() {
+    const { post } = this.props
+    if (post.status === FETCH_POST_ERROR) {
+      return 'Error'
+    }
+    else if (post.status === FETCH_POST) {
+      return HTMLReactParser(post.data.title.rendered)
+    }
+    else return ''
+  }
+  getCatTitle() {
+    const { cat } = this.props
+    if (cat.status === FETCH_CAT_INFO_ERROR) {
+      return 'Error'
+    }
+    else if (cat.status === FETCH_CAT_INFO) {
+      return 'Categoria ' + cat.name
+    }
+    else return ''
+  }
+  getTagTitle() {
+    const { tag } = this.props
+    if (tag.status === FETCH_TAG_INFO_ERROR) {
+      return 'Error'
+    }
+    else if (tag.status === FETCH_TAG_INFO) {
+      return 'Tag ' + tag.name
+    }
+    else return ''
   }
 
   preRender() {
-    document.title = `${RT_API.siteName}`;
-    this.title = ''
     this.content = null
     this.extraContent = null
     switch (this.props.location.type) {
       case HOME:
-        document.title += ` - ${RT_API.siteDescription}`;
-        this.title = 'Ultimi post inseriti'
+        document.title += `${RT_API.siteName}`
         this.content = <CardsLoader tax={''} />
         this.extraContent = <ExtraContent />
         break;
@@ -64,7 +98,7 @@ class Blog extends Component {
         this.content = <CardsLoader tax={'categories'} />
         break;
       case NOT_FOUND:
-        document.title += ' - Not found';
+        document.title += 'Not found';
         this.content = () => (<div>404</div>)
         break;
       default:
@@ -75,31 +109,28 @@ class Blog extends Component {
   render() {
     this.preRender()
     return (
-      <BlogLayout>
+      <ResponsiveContainer>
         {/* menu ed heading is here */}
         <Segment className={'container section'}>
           {this.content}
         </Segment>
         {this.extraContent}
         <Footer></Footer>
-      </BlogLayout>
+      </ResponsiveContainer>
     );
   }
 }
-const BlogLayout = ({ children }) => (
-  <ResponsiveContainer>
-    {children}
-  </ResponsiveContainer>
-)
 
-function mapStateToProps({ location }) {
+function mapStateToProps({ location, post, cat, tag }) {
   return {
-    location
+    location,
+    post,
+    cat,
+    tag
   }
 }
 
 export default connect(mapStateToProps, null)(Blog)
-
 
 function Footer() {
   return (
