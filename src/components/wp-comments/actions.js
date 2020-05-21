@@ -15,13 +15,13 @@ export function fetchComments(postId) {
       .then((response) => {
         dispatch({
           type: FETCH_COMMENTS,
-          payload: response.data
+          payload: { list: response.data }
         });
       })
-      .catch( error => {
+      .catch(error => {
         dispatch({
           type: FETCH_COMMENTS_ERROR,
-          payload: error.response
+          payload: {data: error.response}
         })
       })
   }

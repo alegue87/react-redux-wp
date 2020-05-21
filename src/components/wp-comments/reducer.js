@@ -4,15 +4,13 @@ import {
 } from './actions'
 
 export default (state = {}, action) => {
-  switch(action.type){
+  switch (action.type) {
     case INIT_COMMENTS:
     case FETCHING_COMMENTS:
-      let copy = Object.assign({}, state)
-      copy.state = action.type
-      return copy
+      return { state: action.type }
     case FETCH_COMMENTS:
     case FETCH_COMMENTS_ERROR:
-      return Object.assign(action.payload, {state:action.type})
+      return Object.assign(action.payload, {state: action.type})
     default:
       return state
   }
