@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 
-export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 // Pages ( state.location.type )
 
@@ -107,18 +106,6 @@ export function fetchTaxInfo(tax, postId, tagIds) {
 }
 
 
-
-export function fetchComments(postId) {
-  return function (dispatch) {
-    axios.get(`${WP_API_ENDPOINT}/comments?post=${postId}&orderby=parent&per_page=100`)
-      .then(response => {
-        dispatch({
-          type: FETCH_COMMENTS,
-          payload: response.data
-        });
-      })
-  }
-}
 
 export function createComment(params = { post: 0, parent: 0, author_name: '', author_email: '', content: '' }) {
   return function (dispatch) {

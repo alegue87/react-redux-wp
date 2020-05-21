@@ -27,7 +27,6 @@ export function searchSite(term, post_type = 'posts') {
           payload: {
             data: error.response,
             state: SEARCH_POSTS_ERROR
-
           }
         });
       })

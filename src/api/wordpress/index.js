@@ -49,13 +49,22 @@ class WpApi {
     })
   }
 
-  searchSite = (term, post_type='posts') => {
-    return new Promise( (fulfill, reject) => {
+  searchSite = (term, post_type = 'posts') => {
+    return new Promise((fulfill, reject) => {
       axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&search=${term}`)
-      .then(response => fulfill(response))
-      .catch( error => reject(error))
+        .then(response => fulfill(response))
+        .catch(error => reject(error))
     })
   }
+
+  fetchComments = (postId) => {
+    return new Promise((fulfill, reject) => {
+      axios.get(`${WP_API_ENDPOINT}/comments?post=${postId}&orderby=parent&per_page=100`)
+        .then(response => fulfill(response))
+        .catch(error => reject(error))
+    })
+  }
+
 }
 
 export default new WpApi()

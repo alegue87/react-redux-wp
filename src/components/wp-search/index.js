@@ -12,9 +12,9 @@ import './wp-search.css'
 class WpSearch extends Component {
 
   handleSearchChange(e, { value }) {
-    if(_.trim(value) === "")return
+    if (_.trim(value) === "") return
     this.value = value
-    this.props.searchSite(value)    
+    this.props.searchSite(value)
   }
 
   isLoading() {
@@ -22,9 +22,9 @@ class WpSearch extends Component {
     return search.state === SEARCH_POSTS_LOADING
   }
 
-  handleResultSelect(e, { result }){
+  handleResultSelect(e, { result }) {
     const { dispatch } = this.props
-    if(result.type === 'post'){
+    if (result.type === 'post') {
       dispatch({
         type: SINGLE,
         payload: {
@@ -32,20 +32,19 @@ class WpSearch extends Component {
         }
       })
     }
-    else{
-      window.location.href=result.link
-    }    
+    else {
+      window.location.href = result.link
+    }
   }
 
   getResults() {
     const { search } = this.props
     if (search.state === SEARCH_POSTS) {
-      console.log(search.list)
-      return search.list.map( v => {
+      return search.list.map(v => {
         return {
           title: HTMLReactParser(v.title.rendered),
           date: v.formatted_date,
-          description: HTMLReactParser(_.truncate(v.excerpt.rendered, {lenght:60})),
+          description: HTMLReactParser(_.truncate(v.excerpt.rendered, { lenght: 60 })),
           image: v.featured_image_url.thumbnail,
           link: v.link,
           type: v.type
@@ -63,7 +62,7 @@ class WpSearch extends Component {
       onSearchChange={_.debounce(this.handleSearchChange.bind(this), 500)}
       onResultSelect={this.handleResultSelect.bind(this)}
       results={this.getResults()}
-      
+
     />
   }
 

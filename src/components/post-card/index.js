@@ -36,7 +36,7 @@ function renderImage(image){
 function renderCategories(categories) {
   if ('undefined' !== typeof categories) {
     return categories.map((cat, i) => {
-      if (1 == categories.length || cat.slug !== 'uncategorized') {
+      if (1 === categories.length || cat.slug !== 'uncategorized') {
         return (<span key={cat.id}>
           <Link
             to={{

@@ -6,7 +6,7 @@ import action from './reducers/action-reducer';
 import {posts, tag, cat} from './components/cards-loader/reducer';
 import menu from './components/wp-menu/reducer'
 import search from './components/wp-search/reducer'
-import comments from './reducers/comments-reducer';
+import comments from './components/wp-comments/reducer';
 //import { persistStore, persistReducer } from 'redux-persist';
 //import storage from 'redux-persist/lib/storage';
 import { routesMap } from './routes'

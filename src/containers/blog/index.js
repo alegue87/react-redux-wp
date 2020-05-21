@@ -18,6 +18,7 @@ import {
 } from 'semantic-ui-react'
 import ResponsiveContainer from '../responsive/index';
 import CardsLoader from '../../components/cards-loader/index'
+import WpComments from '../../components/wp-comments/index'
 import './blog.css'
 
 class Blog extends Component {
@@ -49,7 +50,11 @@ class Blog extends Component {
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        this.content = <Article />
+        this.content =
+          <div>
+            <Article />
+            <WpComments />
+          </div>
         break;
       case TAG:
         this.content = <CardsLoader tax={'tags'} />
