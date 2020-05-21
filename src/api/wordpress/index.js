@@ -48,6 +48,14 @@ class WpApi {
         .catch(error => reject(error))
     })
   }
+
+  searchSite = (term, post_type='posts') => {
+    return new Promise( (fulfill, reject) => {
+      axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&search=${term}`)
+      .then(response => fulfill(response))
+      .catch( error => reject(error))
+    })
+  }
 }
 
 export default new WpApi()

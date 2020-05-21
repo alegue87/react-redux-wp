@@ -1,10 +1,7 @@
 /* eslint-disable no-undef */
 import axios from 'axios';
 
-export const SEARCH_POSTS = 'SEARCH_POSTS';
 
-
-export const FETCH_MENU = 'FETCH_MENU';
 export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 // Pages ( state.location.type )
@@ -110,20 +107,6 @@ export function fetchTaxInfo(tax, postId, tagIds) {
 }
 
 
-
-export function searchSite(term, post_type = 'posts') {
-  return function (dispatch) {
-    axios.get(`${WP_API_ENDPOINT}/${post_type}?_embed&search=${term}`)
-      .then(response => {
-        dispatch({
-          type: SEARCH_POSTS,
-          payload: {
-            list: response.data
-          }
-        });
-      })
-  }
-}
 
 export function fetchComments(postId) {
   return function (dispatch) {

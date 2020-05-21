@@ -7,6 +7,7 @@ import { SINGLE, HOME } from '../../routes/index';
 import { fetchMenu } from './actions'
 import { Menu, Container, Button } from 'semantic-ui-react'
 import { getRelativeUrl } from '../../utils/index'
+import WpSearch from '../wp-search/index'
 
 class WpMenu extends Component {
   componentDidMount() {
@@ -143,6 +144,7 @@ class WpMenu extends Component {
           <Link to={{type:HOME}}>Home</Link>
         </Menu.Item>
         {this.renderMenu(this.props.menu)}
+        <WpSearch/>
         {this.renderAuthArea()}
       </Container>
     );

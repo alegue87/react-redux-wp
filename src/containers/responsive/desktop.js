@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -22,7 +23,6 @@ const getWidth = () => {
 
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
 }
-
 
 class DesktopContainer extends Component {
   state = {}

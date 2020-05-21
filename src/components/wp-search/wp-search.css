@@ -1,0 +1,9 @@
+
+.menu .search{
+  padding:0 10px;
+  margin:auto
+}
+
+.menu .search input{
+  max-width:200px;
+}

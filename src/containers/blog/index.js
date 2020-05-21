@@ -25,6 +25,7 @@ class Blog extends Component {
   componentDidMount() {
     document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
     this.locationPathname = this.props.location.pathname
+    window.scrollTo(0, 0)
   }
 
   locationChanged() {

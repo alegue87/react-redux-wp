@@ -1,5 +1,6 @@
 import { INIT_POST } from '../components/article/actions'
 import { INIT_POSTS, INIT_TAG, INIT_CAT } from '../components/cards-loader/actions'
+import { INIT_SEARCH } from '../components/wp-search/actions'
 
 export const HOME = 'HOME';
 export const SINGLE = 'SINGLE';
@@ -26,6 +27,9 @@ export function init(dispatch) {
     });
     dispatch({
       type: INIT_TAG
+    });
+    dispatch({
+      type: INIT_SEARCH
     });
   }
 }
