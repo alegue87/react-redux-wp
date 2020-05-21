@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const PRETTYPERMALINK_ENDPOINT = `${RT_API.root}react-theme/v1/prettyPermalink/`;
 const WP_API_ENDPOINT = `${RT_API.root}wp/v2`;
+const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
 
 class WpApi {
 
@@ -37,6 +38,14 @@ class WpApi {
         .catch(error => {
           reject(error)
         })
+    })
+  }
+
+  fetchMenu = (menu) => {
+    return new Promise((fulfill, reject) => {
+      axios.get(`${MENU_ENDPOINT}${menu}`)
+        .then(response => fulfill(response))
+        .catch(error => reject(error))
     })
   }
 }

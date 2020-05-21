@@ -9,7 +9,7 @@ import {
   Menu,
 } from 'semantic-ui-react'
 import Heading from '../../components/heading';
-import WpMenu from '../../components/wp-menu'
+import WpMenu from '../../components/wp-menu/index'
 import { connect } from 'react-redux'
 import { HOME } from '../../routes/index'
 import './desktop.css'

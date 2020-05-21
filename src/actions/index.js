@@ -9,11 +9,6 @@ export const FETCH_COMMENTS = 'FETCH_COMMENTS';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 // Pages ( state.location.type )
 
-const MENU_ENDPOINT = `${RT_API.root}react-theme/v1/menu-locations/`;
-
-
-
-
 
 export function fetchPostsFromTax(tax = 'categories', taxId = 0, post_type = 'posts') {
   return function (dispatch, getState, bag) {
@@ -114,19 +109,7 @@ export function fetchTaxInfo(tax, postId, tagIds) {
   }
 }
 
-export function fetchMenu(menu) {
-  return function (dispatch) {
-    axios.get(`${MENU_ENDPOINT}${menu}`)
-      .then(response => {
-        response.data.map((item) => {
-          dispatch({
-            type: FETCH_MENU,
-            payload: { items: response.data, name: menu }
-          });
-        })
-      });
-  }
-}
+
 
 export function searchSite(term, post_type = 'posts') {
   return function (dispatch) {

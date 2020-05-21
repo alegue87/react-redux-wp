@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import post from './components/article/reducer'
 import action from './reducers/action-reducer';
 import {posts, tag, cat} from './components/cards-loader/reducer';
-import menu from './reducers/menu-reducer'
+import menu from './components/wp-menu/reducer'
 import comments from './reducers/comments-reducer';
 //import { persistStore, persistReducer } from 'redux-persist';
 //import storage from 'redux-persist/lib/storage';

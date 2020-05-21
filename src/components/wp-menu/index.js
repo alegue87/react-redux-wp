@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import Link from 'redux-first-router-link';
 import { connect } from 'react-redux';
-import { SINGLE, HOME } from '../routes/index';
-import { fetchMenu } from '../actions/index'
+import { SINGLE, HOME } from '../../routes/index';
+import { fetchMenu } from './actions'
 import { Menu, Container, Button } from 'semantic-ui-react'
-import { getRelativeUrl } from '../utils/index'
+import { getRelativeUrl } from '../../utils/index'
 
 class WpMenu extends Component {
   componentDidMount() {
-    this.props.actions.fetchMenu(this.props.name);
+    this.props.fetchMenu(this.props.name);
   }
 
   shouldComponentUpdate(nextProps) {
@@ -83,7 +83,7 @@ class WpMenu extends Component {
     }
   }
 
-  getClasses(location = '') {
+  getClasses(location = '') { // forse da togliere..
     switch (location) {
       case 'main_menu':
         return 'navbar-nav mr-auto';
@@ -154,9 +154,7 @@ function mapStateToProps({ menu, location }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ fetchMenu }, dispatch)
-  }
+  return bindActionCreators({ fetchMenu }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WpMenu);
