@@ -65,6 +65,19 @@ class WpApi {
     })
   }
 
+  createComment = (params = { post: 0, parent: 0, author_name: '', author_email: '', content: ''}) => {
+    return new Promise((fullfill, reject) => {
+      axios({
+        method: 'post',
+        url: `${WP_API_ENDPOINT}/comments`,
+        headers: { 'X-WP-Nonce': RT_API.nonce },
+        data: params
+      })
+        .then(response => fullfill(response))
+        .catch(error => reject(error))
+    })
+  }
+
 }
 
 export default new WpApi()

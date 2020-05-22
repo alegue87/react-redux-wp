@@ -16,8 +16,8 @@ class Comment extends Component {
     dispatch({
       type: REPLY_TO,
       payload: {
-        reply: {
-          commentId: this.commentId,
+        comment: {
+          id: this.commentId,
           authorName: this.authorName,
           state: REPLY_TO
         }
@@ -27,8 +27,8 @@ class Comment extends Component {
 
   isSelectedForReply(comment){
     const { comments } = this.props
-    if(comments.reply.commentId === undefined) return false
-    else return comments.reply.commentId === comment.id
+    if(comments.comment.id === undefined) return false
+    else return comments.comment.id === comment.id
   }
 
   render() {

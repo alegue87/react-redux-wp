@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 
-export const CREATE_COMMENT = 'CREATE_COMMENT';
 // Pages ( state.location.type )
 
 
@@ -107,19 +106,3 @@ export function fetchTaxInfo(tax, postId, tagIds) {
 
 
 
-export function createComment(params = { post: 0, parent: 0, author_name: '', author_email: '', content: '' }) {
-  return function (dispatch) {
-    axios({
-      method: 'post',
-      url: `${WP_API_ENDPOINT}/comments`,
-      headers: { 'X-WP-Nonce': RT_API.nonce },
-      data: params
-    })
-      .then(response => {
-        dispatch({
-          type: CREATE_COMMENT,
-          payload: response.data
-        });
-      });
-  }
-}

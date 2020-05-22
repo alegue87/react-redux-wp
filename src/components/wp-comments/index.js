@@ -86,19 +86,22 @@ class WpComments extends Component {
     }
     else if (comments.state === FETCH_COMMENTS) {
       console.log(this.nestComments(comments.list))
-      content = (
-        <div>
-          {this.renderNestedComments(this.nestComments(comments.list)[0].children)}
-          <CommentForm/>
-        </div>
-      )
+      if (this.nestComments(comments.list)[0] !== undefined)
+        content = (
+          <div>
+            {this.renderNestedComments(this.nestComments(comments.list)[0].children)}
+            <CommentForm />
+          </div>
+        )
+      else
+        content = <CommentForm />
     }
 
     if (this.comment_status === STATUS_OPEN)
       return (
         <div>
           <Header as='h2' dividing>Commenti</Header>
-          {content}          
+          {content}
         </div>)
     else {
       return ('')
