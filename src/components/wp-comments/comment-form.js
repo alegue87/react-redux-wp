@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Form, Button, Segment, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { REPLY_TO } from './actions'
+import { REPLY_TO, INIT_REPLY } from './actions'
 
 class CommentForm extends Component {
   componentDidMount() {
@@ -10,11 +10,19 @@ class CommentForm extends Component {
     this.replyCommentId = 0
   }
 
+  cancelReply() {
+    const { dispatch } = this.props
+    dispatch({
+      type: INIT_REPLY
+    })
+  }
+
   render() {
     const { state } = this.props.comments.reply
     console.log(state)
 
     let replyTo = ''
+    let cancelButton = ''
     if (state === REPLY_TO) {
       console.log('reply')
       const { post } = this.props
@@ -24,6 +32,10 @@ class CommentForm extends Component {
 
       replyTo =
         <Header as='h3'>Risposta a {reply.authorName}</Header>
+      cancelButton =
+        <Button content='Cancella risposta' primary icon='cancel' labelPosition='left'
+          onClick={this.cancelReply.bind(this)}
+        />
     }
 
     return (
@@ -31,6 +43,7 @@ class CommentForm extends Component {
         {replyTo}
         <Form.TextArea />
         <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+        {cancelButton}
       </Form>
     )
   }
@@ -41,7 +54,7 @@ class CommentForm extends Component {
 function mapStateToProps({ comments, post }) {
   return { comments, post }
 }
-function mapDispatchToProps(dispatch){
-  return bindActionCreators({ dispatch}, dispatch)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ dispatch }, dispatch)
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CommentForm)

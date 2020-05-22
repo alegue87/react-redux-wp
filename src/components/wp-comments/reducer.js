@@ -14,6 +14,9 @@ export default (state = {}, action) => {
         action.payload, { state: action.type }, { reply: { state: INIT_REPLY } })
     case FETCH_COMMENTS_ERROR:
       return Object.assign({}, action.payload)
+    case INIT_REPLY:{
+      return Object.assign({}, state, { reply: { state: INIT_REPLY }})
+    }
     case REPLY_TO:
       return Object.assign({}, state, action.payload)
     default:
