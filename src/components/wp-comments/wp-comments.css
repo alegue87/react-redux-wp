@@ -2,3 +2,14 @@
 .comment img{
   height: auto!important;
 }
+
+a.actions {
+  cursor:pointer;
+}
+
+.highlight {
+  transition: ease;
+  background: lightgoldenrodyellow;
+  padding: 10px;
+  border-radius: 10px;
+}

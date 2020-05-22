@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import { Comment, Header, Loader, Container } from 'semantic-ui-react'
+import { Comment as SuiComment, Header, Loader, Container, Form, Button } from 'semantic-ui-react'
 import { fetchComments, INIT_COMMENTS, FETCHING_COMMENTS, FETCH_COMMENTS_ERROR, FETCH_COMMENTS } from './actions'
 import { FETCH_POST } from '../article/actions'
-import HTMLReactParser from 'html-react-parser'
+import Comment from './comment'
+import CommentForm from './comment-form'
 import './wp-comments.css'
 
 const STATUS_OPEN = 'open'
@@ -44,28 +45,24 @@ class WpComments extends Component {
 
 
   renderNestedComments(nestedComments) {
-    return (
-      <Comment.Group threaded>
-        {Object.keys(nestedComments).map(commentId => {
-          const comment = nestedComments[commentId].comment;
-          return (
-            <Comment key={commentId}>
-              {comment.id ?
-                <div>
-                  <Comment.Avatar src={comment.author_avatar_urls[48]} />
-                  <Comment.Content>
-                    <Comment.Author as='a' href={comment.author_url}>{comment.author_name}</Comment.Author>
-                    <Comment.Metadata><div>{comment.date}</div></Comment.Metadata>
-                    <Comment.Text>{HTMLReactParser(comment.content.rendered)}</Comment.Text>
-                    <Comment.Actions>Reply</Comment.Actions>
-                  </Comment.Content>
-                </div>
-                : ''}
-              {this.renderNestedComments(nestedComments[commentId].children)}
-            </Comment>
-          )
-        })}
-      </Comment.Group>)
+    if (_.isEmpty(nestedComments))
+      return
+    else {
+      return (
+        <SuiComment.Group threaded >
+          {
+            Object.keys(nestedComments).map(commentId => {
+              const comment = nestedComments[commentId].comment;
+              return (
+                <Comment key={comment.id} comment={comment}>
+                  {this.renderNestedComments(nestedComments[comment.id].children)}
+                </Comment>
+              )
+            })
+          }
+        </SuiComment.Group>
+      )
+    }
   }
 
   componentDidUpdate() {
@@ -79,7 +76,7 @@ class WpComments extends Component {
   }
   render() {
     const { comments } = this.props
-
+    console.log('comments state' + comments.state)
     let content = ''
     if (comments.state === FETCHING_COMMENTS) {
       content = <Loader active />
@@ -88,15 +85,21 @@ class WpComments extends Component {
       content = 'Errore nel recupero dei commenti'
     }
     else if (comments.state === FETCH_COMMENTS) {
-      content = this.renderNestedComments(this.nestComments(comments.list))
+      console.log(this.nestComments(comments.list))
+      content = (
+        <div>
+          {this.renderNestedComments(this.nestComments(comments.list)[0].children)}
+          <CommentForm/>
+        </div>
+      )
     }
 
     if (this.comment_status === STATUS_OPEN)
       return (
         <div>
           <Header as='h2' dividing>Commenti</Header>
-          {content}
-        </div>)          
+          {content}          
+        </div>)
     else {
       return ('')
     }
@@ -111,3 +114,4 @@ function mapStateToDispatch(dispatch) {
 }
 
 export default connect(mapStateToProps, mapStateToDispatch)(WpComments)
+
