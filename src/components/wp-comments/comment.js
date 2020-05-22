@@ -36,7 +36,7 @@ class Comment extends Component {
     this.commentId = comment.id
     this.authorName = comment.author_name
 
-    return <SuiComment key={comment.id}><div>ID: {comment.id}</div>
+    return <SuiComment key={comment.id}>
       <SuiComment.Avatar src={comment.author_avatar_urls[96]} />
       <SuiComment.Content className={
           this.isSelectedForReply(comment) ? 'highlight' : ''}>

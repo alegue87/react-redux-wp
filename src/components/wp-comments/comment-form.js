@@ -47,7 +47,6 @@ class CommentForm extends Component {
 
   render() {
     const { state } = this.props.comments.comment
-    console.log(state)
 
     let replyTo = ''
     let cancelButton = ''
@@ -57,7 +56,6 @@ class CommentForm extends Component {
     const { comment } = this.props.comments
     switch (state) {
       case REPLY_TO:
-        console.log('reply')
 
         this.postId = post.data.id
         this.replyCommentId = comment.id
@@ -94,7 +92,7 @@ class CommentForm extends Component {
         <Input id='comment-name' placeholder='Nome' /> <br /> <br />
         <Input iconPosition='left' placeholder='Email' > <br /><br />
           <Icon name='at' />
-          <Input id='comment-email' />
+          <input id='comment-email' />
         </Input> <br /><br />
         <Button content='Invia' labelPosition='left' icon='edit' primary
           onClick={this.handleAddComment.bind(this)} />

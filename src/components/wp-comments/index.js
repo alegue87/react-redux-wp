@@ -12,14 +12,6 @@ import './wp-comments.css'
 const STATUS_OPEN = 'open'
 class WpComments extends Component {
 
-  componentDidMount() {
-    this.comment_status = ''
-  }
-
-  getComments() {
-    return ''
-  }
-
   nestComments(comments) {
     const nestedComments = {};
     for (const comment of comments) {
@@ -65,18 +57,24 @@ class WpComments extends Component {
     }
   }
 
+  isPostReady(){
+    const { post } = this.props
+    return post.state === FETCH_POST
+  }
+  areCommmentsOpen(){
+    const { post } = this.props
+    return post.data.comment_status === STATUS_OPEN
+  }
+
   componentDidUpdate() {
     const { comments, post } = this.props
-    if (post.state === FETCH_POST && comments.state === INIT_COMMENTS) {
-      if (post.data.comment_status === STATUS_OPEN) {
-        this.comment_status = STATUS_OPEN
+    if (this.isPostReady() && comments.state === INIT_COMMENTS) {
+      if(this.areCommmentsOpen())
         this.props.fetchComments(post.data.id)
-      }
     }
   }
   render() {
     const { comments } = this.props
-    console.log('comments state' + comments.state)
     let content = ''
     if (comments.state === FETCHING_COMMENTS) {
       content = <Loader active />
@@ -85,10 +83,9 @@ class WpComments extends Component {
       content = 'Errore nel recupero dei commenti'
     }
     else if (comments.state === FETCH_COMMENTS) {
-      console.log(this.nestComments(comments.list))
       if (this.nestComments(comments.list)[0] !== undefined)
         content = (
-          <div>
+          <div >
             {this.renderNestedComments(this.nestComments(comments.list)[0].children)}
             <CommentForm />
           </div>
@@ -97,9 +94,9 @@ class WpComments extends Component {
         content = <CommentForm />
     }
 
-    if (this.comment_status === STATUS_OPEN)
+    if (this.isPostReady() && this.areCommmentsOpen())
       return (
-        <div>
+        <div id='comments'>
           <Header as='h2' dividing>Commenti</Header>
           {content}
         </div>)
