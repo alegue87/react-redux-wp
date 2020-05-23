@@ -27,7 +27,7 @@ if ( ! class_exists( 'Pretty_Permalinks_Endpoint' ) ) :
 		 */
 		function get_post_for_url( $data ) {
 			$post_id    = url_to_postid( $data['url'] );
-			$post_type  = get_post_type( $post_id );
+      $post_type  = get_post_type( $post_id );
 			$controller = new WP_REST_Posts_Controller( $post_type );
 			$request    = new WP_REST_Request( 'GET', "/wp/v2/{$post_type}s/$post_id" );
 			$request->set_url_params( array( 'id' => $post_id ) );

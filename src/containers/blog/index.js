@@ -19,6 +19,9 @@ import {
 import ResponsiveContainer from '../responsive/index';
 import CardsLoader from '../../components/cards-loader/index'
 import WpComments from '../../components/wp-comments/index'
+import { FETCH_POST } from '../../components/article/actions'
+import _ from 'lodash'
+import ContactForm from '../../components/contact-form/index'
 import './blog.css'
 
 class Blog extends Component {
@@ -40,6 +43,14 @@ class Blog extends Component {
     }
   }
 
+  isPageWithContactForm() {
+    const { post } = this.props
+    if (post.state === FETCH_POST)
+      return post.data.type === 'page' && !_.isEmpty(post.data.wpcf7)
+    
+    return false
+  }
+
   preRender() {
     this.content = null
     this.extraContent = null
@@ -50,11 +61,15 @@ class Blog extends Component {
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        this.content =
-          <div>
-            <Article />
-            <WpComments />
-          </div>
+        if (this.isPageWithContactForm())
+          this.content = <ContactForm />
+        else {
+          this.content =
+            <div>
+              <Article />
+              <WpComments />
+            </div>
+        }
         break;
       case TAG:
         this.content = <CardsLoader tax={'tags'} />
@@ -86,9 +101,10 @@ class Blog extends Component {
   }
 }
 
-function mapStateToProps({ location }) {
+function mapStateToProps({ location, post }) {
   return {
-    location
+    location,
+    post
   }
 }
 

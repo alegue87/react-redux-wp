@@ -9,7 +9,6 @@ import { INIT_POST, FETCH_POST, FETCH_POST_ERROR, fetchPost } from './actions'
 import { bindActionCreators } from 'redux'
 import HTMLReactParser from 'html-react-parser';
 
-
 class Article extends React.Component {
 
   componentDidMount() {

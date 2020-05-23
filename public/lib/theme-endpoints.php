@@ -4,6 +4,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+/**
+ * Detect plugin. For use on Front End only.
+ */
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+ 
+// check for plugin using plugin name
+function is_wpcf7_active(){
+  if ( is_plugin_active( 'contact-form-7/wp-contact-form-7.php' ) ) {
+    return true;
+  }  
+  else{
+    return false;
+  }
+}
+
+
 if ( ! class_exists( 'Theme_Endpoints' ) ) :
 
 	class Theme_Endpoints {
@@ -14,6 +30,8 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
       include_once 'endpoints/pretty-permalinks.php';
       include_once 'endpoints/add-tags.php';
       include_once 'endpoints/add-categories.php';
+      if(is_wpcf7_active())
+        include_once 'endpoints/add-wpcf7.php';
 		}
 
 		function init() {
@@ -31,7 +49,8 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
       
       (new Add_tags_to_post())->init();
       (new Add_categories_to_post())->init();
-
+      if(is_wpcf7_active())
+        (new Add_wpcf7_to_page())->init();
 		}
 	}
 

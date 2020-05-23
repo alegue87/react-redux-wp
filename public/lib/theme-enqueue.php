@@ -58,10 +58,9 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 				'baseUrl'         => get_bloginfo( 'url' ),
 				'siteDescription' => get_bloginfo( 'description' ),
 				'categories'      => $this->get_categories_with_links(),
-        'current_user'    => wp_get_current_user(),
-        'plugin_ace'      => $this->plugin_installed(ACE),
-        'plugin_cf7'      => $this->plugin_installed(CONTACT_FORM_7)
-        
+        'current_user'    => wp_get_current_user()
+        //'plugin_ace'      => $this->plugin_installed(ACE),
+        //'plugin_cf7'      => $this->plugin_installed(CONTACT_FORM_7)        
 			) );
       //wp_enqueue_style( 'theme_stylesheet', get_template_directory_uri() . '/bundle.css', [ 'bootstrap4-css' ], $this->version );
       wp_deregister_style('dashicons');
