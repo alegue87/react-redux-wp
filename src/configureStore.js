@@ -7,6 +7,7 @@ import {posts, tag, cat} from './components/cards-loader/reducer';
 import menu from './components/wp-menu/reducer'
 import search from './components/wp-search/reducer'
 import comments from './components/wp-comments/reducer';
+import feedback from './components/contact-form/reducer'
 //import { persistStore, persistReducer } from 'redux-persist';
 //import storage from 'redux-persist/lib/storage';
 import { routesMap } from './routes'
@@ -30,6 +31,7 @@ export default function configureStore(preloadedState) {
     comments,
     post,
     search,
+    feedback,
     location: reducer
   })
   //const pRootReducer = persistReducer(persistConfig, rootReducer)

@@ -66,14 +66,14 @@ class WpApi {
   }
 
   createComment = (params = { post: 0, parent: 0, author_name: '', author_email: '', content: ''}) => {
-    return new Promise((fullfill, reject) => {
+    return new Promise((fulfill, reject) => {
       axios({
         method: 'post',
         url: `${WP_API_ENDPOINT}/comments`,
         headers: { 'X-WP-Nonce': RT_API.nonce },
         data: params
       })
-        .then(response => fullfill(response))
+        .then(response => fulfill(response))
         .catch(error => reject(error))
     })
   }

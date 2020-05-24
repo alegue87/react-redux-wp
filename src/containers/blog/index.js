@@ -54,6 +54,7 @@ class Blog extends Component {
   preRender() {
     this.content = null
     this.extraContent = null
+    this.classes = ''
     switch (this.props.location.type) {
       case HOME:
         document.title += `${RT_API.siteName}`
@@ -61,8 +62,10 @@ class Blog extends Component {
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        if (this.isPageWithContactForm())
+        if (this.isPageWithContactForm()){
+          this.classes = 'compact-opaque'
           this.content = <ContactForm />
+        }
         else {
           this.content =
             <div>
@@ -91,7 +94,7 @@ class Blog extends Component {
     return (
       <ResponsiveContainer>
         {/* menu ed heading is here */}
-        <Segment className={'container section'}>
+        <Segment className={`container section ${this.classes}`}>
           {this.content}
         </Segment>
         {this.extraContent}

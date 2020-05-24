@@ -1,0 +1,23 @@
+
+.ui.input  {
+  max-width:250px!important;
+}
+
+.ui.form textarea{
+  margin:auto;
+  max-height: 200px;
+}
+
+.ui.text.container {
+  max-width: 500px!important;
+}
+
+.compact-opaque {
+  background:rgba(255, 255, 255, 0.6)!important;
+  height: 60vh!important;
+}
+
+/* .ui.segment.main */
+.no-space {
+  padding-bottom:0px!important;
+}

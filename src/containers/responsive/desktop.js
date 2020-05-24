@@ -13,6 +13,8 @@ import Heading from '../../components/heading';
 import WpMenu from '../../components/wp-menu/index'
 import { connect } from 'react-redux'
 import { HOME } from '../../routes/index'
+import { FETCH_POST } from '../../components/article/actions'
+import _ from 'lodash'
 import './desktop.css'
 
 // Heads up!
@@ -29,6 +31,14 @@ class DesktopContainer extends Component {
 
   hideFixedMenu = () => this.setState({ fixed: false })
   showFixedMenu = () => this.setState({ fixed: true })
+
+  isPageContact() {
+    const { post } = this.props
+    if (post.state === FETCH_POST)
+      return post.data.type === 'page' && !_.isEmpty(post.data.wpcf7)
+
+    return false
+  }
 
   render() {
     const { children } = this.props
@@ -68,6 +78,28 @@ class DesktopContainer extends Component {
         </Responsive>
       )
     }
+    else if (this.isPageContact()) {
+      return (
+        <Segment
+          inverted
+          vertical
+          className={'main no-space'}
+        >
+          <Menu
+            fixed={null}
+            inverted={true}
+            pointing={true}
+            secondary={true}
+            size='large'
+          >
+            <Container>
+              <WpMenu name={'main_menu'} fixed={false} />
+            </Container>
+          </Menu>
+          {children}
+        </Segment>
+      )
+    }
     else {
       return (
         <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -83,7 +115,7 @@ class DesktopContainer extends Component {
               <WpMenu name={'main_menu'} fixed={true} />
             </Container>
           </Menu>
-          <Segment className={'spacer'}/>
+          <Segment className={'spacer'} />
           {children}
         </Responsive>
       )
@@ -95,7 +127,7 @@ DesktopContainer.propTypes = {
   children: PropTypes.node,
 }
 
-function mapStateToProps({ location }) {
-  return { location }
+function mapStateToProps({ location, post }) {
+  return { location, post }
 }
 export default connect(mapStateToProps, null)(DesktopContainer);
