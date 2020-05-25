@@ -1,7 +1,7 @@
 .segment.main {
   min-height:100vh;
   padding: '1em 0em';
-  background-image:url('/wp-content/themes/react_1/img/rocky-mountain.jpeg')!important;
+  background-image:url('/wp-content/themes/rockymountains/img/rocky-mountain.jpeg')!important;
   background-size:cover!important;
   background-repeat:none!important
 }

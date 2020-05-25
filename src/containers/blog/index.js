@@ -7,7 +7,7 @@ import {
 import { NOT_FOUND } from 'redux-first-router';
 import Article from '../../components/article/index'
 import {
-  Button,
+  Icon,
   Container,
   Divider,
   Grid,
@@ -23,6 +23,7 @@ import { FETCH_POST } from '../../components/article/actions'
 import _ from 'lodash'
 import ContactForm from '../../components/contact-form/index'
 import './blog.css'
+import Link from 'redux-first-router-link';
 
 class Blog extends Component {
 
@@ -47,7 +48,7 @@ class Blog extends Component {
     const { post } = this.props
     if (post.state === FETCH_POST)
       return post.data.type === 'page' && !_.isEmpty(post.data.wpcf7)
-    
+
     return false
   }
 
@@ -62,7 +63,7 @@ class Blog extends Component {
         this.extraContent = <ExtraContent />
         break;
       case SINGLE:
-        if (this.isPageWithContactForm()){
+        if (this.isPageWithContactForm()) {
           this.classes = 'contact-form-container'
           this.content = <ContactForm />
         }
@@ -113,44 +114,7 @@ function mapStateToProps({ location, post }) {
 
 export default connect(mapStateToProps, null)(Blog)
 
-function Footer() {
-  return (
-    <Segment inverted vertical style={{ padding: '5em 0em' }}>
-      <Container>
-        <Grid divided inverted stackable>
-          <Grid.Row>
-            <Grid.Column width={3}>
-              <Header inverted as='h4' content='About' />
-              <List link inverted>
-                <List.Item as='a'>Sitemap</List.Item>
-                <List.Item as='a'>Contact Us</List.Item>
-                <List.Item as='a'>Religious Ceremonies</List.Item>
-                <List.Item as='a'>Gazebo Plans</List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Header inverted as='h4' content='Services' />
-              <List link inverted>
-                <List.Item as='a'>Banana Pre-Order</List.Item>
-                <List.Item as='a'>DNA FAQ</List.Item>
-                <List.Item as='a'>How To Access</List.Item>
-                <List.Item as='a'>Favorite X-Men</List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Header as='h4' inverted>
-                Footer Header
-              </Header>
-              <p>
-                Extra space for a call to action inside the footer that could help re-engage users.
-              </p>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
-    </Segment>
-  )
-}
+
 
 function ExtraContent() {
   return (
@@ -160,27 +124,23 @@ function ExtraContent() {
           <Grid.Row>
             <Grid.Column width={8}>
               <Header as='h3' style={{ fontSize: '2em' }}>
-                We Help Companies and Companions
-          </Header>
+                Lista articoli a "scorrimento"
+              </Header>
               <p style={{ fontSize: '1.33em' }}>
-                We can give your company superpowers to do things that they never thought possible.
-                Let us delight your customers and empower your needs... through pure data analytics.
-          </p>
+                I posts del blog vengono caricati via via che l'utente
+                scorre la pagina, cosi da rendere la navigazione fluida.
+              </p>
               <Header as='h3' style={{ fontSize: '2em' }}>
-                We Make Bananas That Can Dance
-          </Header>
+                Tutto in una pagina
+              </Header>
               <p style={{ fontSize: '1.33em' }}>
-                Yes that's right, you thought it was the stuff of dreams, but even bananas can be
-                bioengineered.
-          </p>
+                La maggior parte del sito viene caricata la prima volta ( struttura, stili..)
+                poi durante la navigazione vengono <b>riutilizzati</b>; questo agevola, come sopra,
+                l'esperienza dell'utente.
+              </p>
             </Grid.Column>
             <Grid.Column floated='right' width={6}>
-              <Image bordered rounded size='large' src='/images/wireframe/white-image.png' />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column textAlign='center'>
-              <Button size='huge'>Check Them Out</Button>
+              <Image bordered rounded size='large' src='/wp-content/themes/rockymountains/img/experience.jpeg' />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -191,18 +151,18 @@ function ExtraContent() {
           <Grid.Row textAlign='center'>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
               <Header as='h3' style={{ fontSize: '2em' }}>
-                "What a Company"
-          </Header>
-              <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+                Mobile
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                E' predisposto, ma la versione per piccoli schermi &egrave; ancora in sviluppo</p>
             </Grid.Column>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
               <Header as='h3' style={{ fontSize: '2em' }}>
-                "I shouldn't have gone with their competitor."
-          </Header>
+                Desktop
+              </Header>
               <p style={{ fontSize: '1.33em' }}>
-                <Image avatar src='/images/avatar/large/nan.jpg' />
-                <b>Nan</b> Chief Fun Officer Acme Toys
-          </p>
+                Tutte le principali rotte di WordPress sono gestite
+              </p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -211,16 +171,16 @@ function ExtraContent() {
       <Segment style={{ padding: '8em 0em' }} vertical>
         <Container text>
           <Header as='h3' style={{ fontSize: '2em' }}>
-            Breaking The Grid, Grabs Your Attention
-      </Header>
-          <p style={{ fontSize: '1.33em' }}>
-            Instead of focusing on content creation and hard work, we have learned how to master the
-            art of doing nothing by providing massive amounts of whitespace and generic content that
-            can seem massive, monolithic and worth your attention.
-      </p>
-          <Button as='a' size='large'>
-            Read More
-      </Button>
+            Principali caratteristiche:
+          </Header>
+          <List bulleted style={{ fontSize: '1.33em' }}>
+            <List.Item>Menu dinamico personalizzabile da area admin </List.Item>
+            <List.Item>Search di pagine 'live' ( senza refresh della pagina )</List.Item>
+            <List.Item>Caricatore dei posts per: 'ultimi posts', 'categorie' e 'tags' a scorrimento</List.Item>
+            <List.Item>Compatibile con plugin <b>ACE</b> ( Simple Code Editor )</List.Item>
+            <List.Item> Commenti ( se abilitati ) a pié dei posts con reply ed avviso di convalida ( se attivato )</List.Item>
+            <List.Item>Compatibile con plugin <b>WPCF7</b> ( per form contatti )</List.Item>           
+          </List>
 
           <Divider
             as='h4'
@@ -228,23 +188,56 @@ function ExtraContent() {
             horizontal
             style={{ margin: '3em 0em', textTransform: 'uppercase' }}
           >
-            <a href='#'>Case Studies</a>
+            <a href='#'>in sviluppo</a>
           </Divider>
 
-          <Header as='h3' style={{ fontSize: '2em' }}>
-            Did We Tell You About Our Bananas?
-      </Header>
           <p style={{ fontSize: '1.33em' }}>
-            Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
-            it's really true. It took years of gene splicing and combinatory DNA research, but our
-            bananas can really dance.
-      </p>
-          <Button as='a' size='large'>
-            I'm Still Quite Interested
-      </Button>
+            Validazione in front-end per la convalida del form contatti, versione per mobile, migliore integrazione
+            con backend per quanto riguarda i settings, menu nel footer, registrazione nuovi utenti e login da react...
+          </p>
         </Container>
       </Segment>
 
     </div>
+  )
+}
+
+function Footer() {
+  return (
+    <Segment inverted vertical style={{ padding: '5em 0em' }}>
+      <Container>
+        <Grid divided inverted stackable>
+          <Grid.Row>
+            <Grid.Column width={3}>
+              <a href='https://github.com/alegue87/react-redux-wp'>Repo su GitHub del tema</a>
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <Header inverted as='h4' content='Created with' />
+              <List link inverted>
+                <List.Item as='a' href='https://it.reactjs.org/'>Reactjs</List.Item> 
+                <List.Item as='a' href='https://react.semantic-ui.com/'>Semantic-ui</List.Item>
+                <List.Item as='a' href='https://redux.js.org/'>Redux</List.Item>
+                <List.Item as='a' href='https://github.com/faceyspacey/redux-first-router'>react-first-router</List.Item>
+                <List.Item as='a' href='https://github.com/devloco/create-react-wptheme'>create-react-wptheme</List.Item>
+              </List>
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <Header as='h4' inverted>
+                Thanks
+              </Header>
+              <p>
+                Per le immagini, compresa quella della landing page a <a href='https://unsplash.com/'>Unsplash</a>
+              </p>
+              <p>
+                e <a href='https://www.jackreichert.com/'>
+                Jack Reichert</a> &nbsp;
+                per il 'fork' da <a href='https://github.com/jackreichert/a-wp-react-redux-theme'>&nbsp; 
+                A WP React Redux Theme</a>
+              </p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
+    </Segment>
   )
 }

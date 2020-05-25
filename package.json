@@ -1,5 +1,5 @@
 {
-    "name": "react_1",
+    "name": "rockymountains",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -47,6 +47,6 @@
             "last 1 safari version"
         ]
     },
-    "homepage": "/wp-content/themes/react_1",
+    "homepage": "/wp-content/themes/rockymountains",
     "browserLaunchTo": "http://localhost:10000"
 }
