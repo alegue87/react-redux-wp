@@ -1,35 +1,53 @@
-import React from 'react'
-import { Card, Image } from 'semantic-ui-react'
+import React, { Component } from 'react'
+import { Card, Image, Transition} from 'semantic-ui-react'
 import { CATEGORY, TAG, SINGLE } from '../../routes/index';
 import Link from 'redux-first-router-link';
 
-const PostCard = ({post, style}) => {
-  return(
-    <Card style={style}>
-      <Image src={renderImage(post.featured_image_url)} wrapped ui={false} />
-      <Card.Content>
-        <Card.Header>
-          <Link 
-            to={{ type: SINGLE, payload: { slug: post.slug } }}
-            dangerouslySetInnerHTML={{__html: post.title.rendered}} 
-          ></Link>
-        </Card.Header>
-        <Card.Meta>
-          {renderCategories(post.categories)}
-          <span className='date'>{renderDates(post.date, post.formatted_date)}</span>
-        </Card.Meta>
-        <Card.Description dangerouslySetInnerHTML={{__html: post.excerpt.rendered}}>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra style={{wordWrap:'anywhere'}}>
-        {renderTags(post.tags)}
-      </Card.Content>
-    </Card>
-  )
+class PostCard extends Component {
+
+  constructor(props){
+    super(props)
+    this.state = {visible: false}
+  }
+
+  render() {
+    const { post, style } = this.props
+
+    const that = this
+    setTimeout(()=>{
+      that.setState({visible:true})
+    }, 100)
+
+    return (
+      <Transition visible={this.state.visible} animation='scale' duration={500}>
+      <Card style={style}>
+        <Image src={renderImage(post.featured_image_url)} wrapped ui={false} />
+        <Card.Content>
+          <Card.Header>
+            <Link
+              to={{ type: SINGLE, payload: { slug: post.slug } }}
+              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+            ></Link>
+          </Card.Header>
+          <Card.Meta>
+            {renderCategories(post.categories)}
+            <span className='date'>{renderDates(post.date, post.formatted_date)}</span>
+          </Card.Meta>
+          <Card.Description dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}>
+          </Card.Description>
+        </Card.Content>
+        <Card.Content extra style={{ wordWrap: 'anywhere' }}>
+          {renderTags(post.tags)}
+        </Card.Content>
+      </Card>
+      </Transition>
+    )
+  }
+
 }
 
-function renderImage(image){
-  if(image === undefined) return
+function renderImage(image) {
+  if (image === undefined) return
   return image.medium
 }
 
@@ -55,7 +73,7 @@ function renderCategories(categories) {
 }
 
 function renderTags(tags) {
-  if(tags === undefined) return
+  if (tags === undefined) return
   return tags.map((tag) => {
     return (
       <span key={tag.id} style={{ marginRight: '5px' }}>
