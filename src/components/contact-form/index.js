@@ -44,9 +44,10 @@ class WPCF7 extends Component {
       if (!_.isEmpty(line[G3_INPUT_REQUIRED]))
         isRequired = true
 
+      label = ''
       let content = /<label>(.*)<\/label>/.exec(line[G1_LABEL])
       if (!_.isNull(content))
-        label = <label>{content}</label>
+        label = <label>{content[1]}</label>
       render.push(
         <Form.Field key={i}>
           {label}
@@ -130,7 +131,7 @@ class WPCF7 extends Component {
       default: ;
     }
     return (
-      <div class='contact-form'>
+      <div className='contact-form'>
         <Header as='h1' inverted textAlign={'center'}>{HTMLReactParser(post.data.title.rendered)}</Header>
         <Form >
           {this.renderLabelInput()}
