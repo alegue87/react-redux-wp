@@ -9,8 +9,9 @@
 - Commenti ( se abilitati ) a pié dei posts con reply ed avviso di convalida ( se attivato )
 - Compatibile con plugin <b>WPCF7</b> ( per form contatti )
 
-Sito WordPress con tema [RockyMountains](http://rockymountains.netsons.it)
+Sito WordPress con tema [RockyMountains](http://rockymountains.netsons.org)
 
+----
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
