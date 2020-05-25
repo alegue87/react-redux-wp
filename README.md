@@ -1,3 +1,17 @@
+# Rocky Mountains - A WordPress React Theme
+
+## Principali caratteristiche
+
+- Menu dinamico personalizzabile da area admin
+- Search di pagine 'live' ( senza refresh della pagina )
+- Caricatore dei posts per: 'ultimi posts', 'categorie' e 'tags' a scorrimento
+- Compatibile con plugin <b>ACE</b> ( Simple Code Editor )
+- Commenti ( se abilitati ) a pié dei posts con reply ed avviso di convalida ( se attivato )
+- Compatibile con plugin <b>WPCF7</b> ( per form contatti )
+
+Sito WordPress con tema [RockyMountains](http://rockymountains.netsons.it)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
