@@ -63,7 +63,7 @@ class Blog extends Component {
         break;
       case SINGLE:
         if (this.isPageWithContactForm()){
-          this.classes = 'compact-opaque'
+          this.classes = 'contact-form-container'
           this.content = <ContactForm />
         }
         else {
@@ -93,8 +93,8 @@ class Blog extends Component {
     this.preRender()
     return (
       <ResponsiveContainer>
-        {/* menu ed heading is here */}
-        <Segment className={`container section ${this.classes}`}>
+        {/* menu and heading is here */}
+        <Segment color='blue' className={`container section ${this.classes}`}>
           {this.content}
         </Segment>
         {this.extraContent}

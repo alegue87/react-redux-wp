@@ -13,3 +13,7 @@
   height:50px!important;
   margin:0px!important;
 }
+
+.ui.segment.main.no-space {
+  padding-bottom:0px!important;
+}

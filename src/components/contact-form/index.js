@@ -130,7 +130,7 @@ class WPCF7 extends Component {
       default: ;
     }
     return (
-      <Container text>
+      <div class='contact-form'>
         <Header as='h1' inverted textAlign={'center'}>{HTMLReactParser(post.data.title.rendered)}</Header>
         <Form >
           {this.renderLabelInput()}
@@ -143,7 +143,7 @@ class WPCF7 extends Component {
             }
           </Segment>
         </Form>
-      </Container>
+      </div>
     )
 
   }

@@ -45,9 +45,10 @@ class DesktopContainer extends Component {
     const page = this.props.location.type
     const { fixed } = this.state
 
+    let content
     if (page === HOME) {
-      return (
-        <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+      content = (
+        <div>
           <Visibility
             once={false}
             onBottomPassed={this.showFixedMenu}
@@ -73,13 +74,12 @@ class DesktopContainer extends Component {
               <Heading />
             </Segment>
           </Visibility>
-
           {children}
-        </Responsive>
+        </div>
       )
     }
     else if (this.isPageContact()) {
-      return (
+      content = (
         <Segment
           inverted
           vertical
@@ -101,8 +101,8 @@ class DesktopContainer extends Component {
       )
     }
     else {
-      return (
-        <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+      content = (
+        <div>
           <Menu
             id={'top-menu'}
             fixed={'top'}
@@ -117,12 +117,17 @@ class DesktopContainer extends Component {
           </Menu>
           <Segment className={'spacer'} />
           {children}
-        </Responsive>
+        </div>
       )
     }
+
+    return (
+      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+        {content}
+      </Responsive>
+    )
   }
 }
-
 DesktopContainer.propTypes = {
   children: PropTypes.node,
 }

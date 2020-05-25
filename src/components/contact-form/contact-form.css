@@ -1,23 +1,22 @@
 
-.ui.input  {
+.contact-form .ui.input  {
   max-width:250px!important;
 }
 
-.ui.form textarea{
+.contact-form .ui.form textarea{
   margin:auto;
   max-height: 200px;
+  height: 160px;
 }
 
-.ui.text.container {
-  max-width: 500px!important;
+.contact-form .button{
+  width:7em;
 }
 
-.compact-opaque {
-  background:rgba(255, 255, 255, 0.6)!important;
-  height: 60vh!important;
+.contact-form .header {
+  text-shadow: 1px 1px 1px lightslategray;
 }
 
-/* .ui.segment.main */
-.no-space {
-  padding-bottom:0px!important;
+.contact-form .message {
+  padding: 0.3em 1.3em!important;
 }

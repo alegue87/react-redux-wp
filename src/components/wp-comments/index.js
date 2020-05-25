@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import { Comment as SuiComment, Header, Loader } from 'semantic-ui-react'
+import { Comment as SuiComment, Header, Loader, Container } from 'semantic-ui-react'
 import { fetchComments, INIT_COMMENTS, FETCHING_COMMENTS, FETCH_COMMENTS_ERROR, FETCH_COMMENTS } from './actions'
 import { FETCH_POST } from '../article/actions'
 import Comment from './comment'
@@ -96,10 +96,10 @@ class WpComments extends Component {
 
     if (this.isPostReady() && this.areCommmentsOpen())
       return (
-        <div id='comments'>
+        <Container text id='comments'>
           <Header as='h2' dividing>Commenti</Header>
           {content}
-        </div>)
+        </Container>)
     else {
       return ('')
     }

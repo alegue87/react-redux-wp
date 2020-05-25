@@ -17,3 +17,7 @@ a.actions {
 #comments {
   margin-top:30px;
 }
+
+#comments input{
+  width: 300px;
+}
