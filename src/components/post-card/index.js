@@ -39,7 +39,7 @@ class PostCard extends Component {
             </Card.Description>
           </Card.Content>
           <Card.Content extra style={{ wordWrap: 'anywhere' }}>
-            {renderTags(post.tags)}
+            {renderTags(post.tags_extra)}
           </Card.Content>
         </Card>
       </Transition>

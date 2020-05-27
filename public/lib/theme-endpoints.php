@@ -28,7 +28,7 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 			include_once 'endpoints/add-formatted-date.php';
 			include_once 'endpoints/menus.php';
       include_once 'endpoints/pretty-permalinks.php';
-      include_once 'endpoints/add-tags.php';
+      include_once 'endpoints/add-tags_extra.php';
       include_once 'endpoints/add-categories.php';
       if(is_wpcf7_active())
         include_once 'endpoints/add-wpcf7.php';
@@ -47,7 +47,7 @@ if ( ! class_exists( 'Theme_Endpoints' ) ) :
 			$Add_Featured_Image_Endpoint = new Add_Featured_Image_Endpoint();
       $Add_Featured_Image_Endpoint->init();
       
-      (new Add_tags_to_post())->init();
+      (new Add_tags_extra_to_post())->init();
       (new Add_categories_to_post())->init();
       if(is_wpcf7_active())
         (new Add_wpcf7_to_page())->init();

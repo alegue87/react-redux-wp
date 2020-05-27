@@ -16,7 +16,7 @@ if( !class_exists('Add_categories_to_post') ){
       add_action('rest_api_init', function(){
         register_rest_field('post', 'categories', array(
           'get_callback' => function($post){
-            $cats = get_the_category($post->ID);
+            $cats = get_the_category($post['id']);
             $data = array();
             if($cats){
               foreach($cats as $cat){
