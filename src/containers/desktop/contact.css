@@ -1,0 +1,9 @@
+.contact-form-container {
+  background:rgba(255, 255, 255, 0.6)!important;
+  height: 589px!important;
+  width:500px!important;
+}
+
+.ui.segment.main.no-space {
+  padding-bottom:0px!important;
+}

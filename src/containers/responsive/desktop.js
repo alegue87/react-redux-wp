@@ -2,17 +2,14 @@
 
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import {
-  Container,
-  Responsive,
-  Segment,
-  Visibility,
-  Menu,
-} from 'semantic-ui-react'
-import Heading from '../../components/heading';
-import WpMenu from '../../components/wp-menu/index'
+import { Responsive } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { HOME } from '../../routes/index'
+import { HOME, SINGLE, CATEGORY, TAG } from '../../routes/index'
+import PageHome from '../desktop/home'
+import PageTaxonomy from '../desktop/taxonomy'
+import PageContact from '../desktop/contact'
+import PageSingle from '../desktop/single'
+import Page404 from '../desktop/404'
 import { FETCH_POST } from '../../components/article/actions'
 import _ from 'lodash'
 import './desktop.css'
@@ -27,11 +24,26 @@ const getWidth = () => {
 }
 
 class DesktopContainer extends Component {
-  state = {}
 
-  hideFixedMenu = () => this.setState({ fixed: false })
-  showFixedMenu = () => this.setState({ fixed: true })
+  componentDidMount() {
+    document.title = `${RT_API.siteName} - ${RT_API.siteDescription}`;
+    this.locationPathname = this.props.location.pathname
+    window.scrollTo(0, 0)
+  }
 
+  locationChanged() {
+    if (this.locationPathname !== this.props.location.pathname) return true; else return false;
+  }
+
+  componentDidUpdate() {
+    if (this.locationChanged()) {
+      window.scrollTo(0, 0);
+      this.locationPathname = this.props.location.pathname
+    }
+  }
+
+  /* In WordPress il form dei contatti è un plugin (wpcf7)
+     espanso in una pagina statica (page) */
   isPageContact() {
     const { post } = this.props
     if (post.state === FETCH_POST)
@@ -41,84 +53,27 @@ class DesktopContainer extends Component {
   }
 
   render() {
-    const { children } = this.props
     const page = this.props.location.type
-    const { fixed } = this.state
+    let content = ''
 
-    let content
-    if (page === HOME) {
-      content = (
-        <div>
-          <Visibility
-            once={false}
-            onBottomPassed={this.showFixedMenu}
-            onBottomPassedReverse={this.hideFixedMenu}
-          >
-            <Segment
-              inverted
-              textAlign='center'
-              vertical
-              className={'main'}
-            >
-              <Menu
-                fixed={fixed ? 'top' : null}
-                inverted={!fixed}
-                pointing={!fixed}
-                secondary={!fixed}
-                size='large'
-              >
-                <Container>
-                  <WpMenu name={'main_menu'} fixed={fixed} />
-                </Container>
-              </Menu>
-              <Heading />
-            </Segment>
-          </Visibility>
-          {children}
-        </div>
-      )
-    }
-    else if (this.isPageContact()) {
-      content = (
-        <Segment
-          inverted
-          vertical
-          className={'main no-space'}
-        >
-          <Menu
-            fixed={null}
-            inverted={true}
-            pointing={true}
-            secondary={true}
-            size='large'
-          >
-            <Container>
-              <WpMenu name={'main_menu'} fixed={false} />
-            </Container>
-          </Menu>
-          {children}
-        </Segment>
-      )
-    }
-    else {
-      content = (
-        <div>
-          <Menu
-            id={'top-menu'}
-            fixed={'top'}
-            inverted={false}
-            pointing={false}
-            secondary={false}
-            size='large'
-          >
-            <Container>
-              <WpMenu name={'main_menu'} fixed={true} />
-            </Container>
-          </Menu>
-          <Segment className={'spacer'} />
-          {children}
-        </div>
-      )
+    switch(page){
+      case HOME:
+        content = <PageHome/>
+        break
+      case CATEGORY:
+        content = <PageTaxonomy tax={'categories'}/>
+        break
+      case TAG:
+        content = <PageTaxonomy tax={'tags'}/>
+        break
+      case SINGLE:
+        if(this.isPageContact())
+          content = <PageContact/>
+        else
+          content = <PageSingle/>
+        break
+      default:
+        content = <Page404/>
     }
 
     return (
