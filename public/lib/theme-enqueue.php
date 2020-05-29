@@ -24,7 +24,7 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 
 		function __construct() {
 			// use this for developments
-//			$this->version = date('U');
+			$this->version = date('U');
     }
     
     function plugins_list(){
@@ -46,12 +46,8 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
 		}
 
 		function theme() {
-      // TODO:
-      // de-register other scripts/styles
-			//wp_enqueue_style( 'bootstrap4-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css', [], '4b' );
-			//wp_enqueue_script( 'ReactTheme-js', get_template_directory_uri() . '/bundle.js', [ 'jquery' ], $this->version, true );
-			//wp_localize_script( 'ReactTheme-js', 'RT_API', array(
-			wp_localize_script( 'jquery', 'RT_API', array(
+			wp_enqueue_script( 'rockymountains-theme', get_template_directory_uri() . '/index.js',  null, $this->version, false );
+			wp_localize_script( 'rockymountains-theme', 'RT_API', array(
 				'root'            => esc_url_raw( rest_url() ),
 				'nonce'           => wp_create_nonce( 'wp_rest' ),
 				'siteName'        => get_bloginfo( 'name' ),
@@ -62,7 +58,6 @@ if ( ! class_exists( 'Theme_Enqueue' ) ) :
         //'plugin_ace'      => $this->plugin_installed(ACE),
         //'plugin_cf7'      => $this->plugin_installed(CONTACT_FORM_7)        
 			) );
-      //wp_enqueue_style( 'theme_stylesheet', get_template_directory_uri() . '/bundle.css', [ 'bootstrap4-css' ], $this->version );
       wp_deregister_style('dashicons');
       wp_deregister_style('admin-bar');
       wp_deregister_style('wp-block-library');
